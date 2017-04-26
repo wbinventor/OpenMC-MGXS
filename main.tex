@@ -1,0 +1,123 @@
+\documentclass[authoryear,5p]{elsarticle}
+
+\renewcommand{\today}{}  % Get rid of date on footer
+\journal{Ann. Nucl. Energy}
+
+\usepackage[bitstream-charter]{mathdesign} % Use BT Charter font
+\usepackage[T1]{fontenc}                   % Use T1 encoding instead of OT1
+\usepackage[utf8]{inputenc}                % Use UTF8 input encoding
+\usepackage{microtype}                     % Improve typography
+\usepackage{amsmath, mathtools}             % AMS Math extensions
+\usepackage{booktabs}                      % Improved table spacing
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{breqn}
+\usepackage{nicefrac}
+\usepackage{multirow}
+
+\usepackage[breaklinks=true]{hyperref}
+
+\usepackage{subcaption}
+\usepackage{dblfloatfix}
+\usepackage{color}
+
+\usepackage{todonotes}
+
+\usepackage[labelfont=bf]{caption}
+\captionsetup[figure]{labelsep=period, name=Figure}
+\captionsetup[table]{labelsep=period, name=Table}
+\def \figureautorefname {Figure}
+\def \algorithmautorefname {Algorithm}
+
+\usepackage[scaled]{beramono}
+
+\usepackage{etoolbox}
+\usepackage{listings}
+\usepackage{color}
+
+% Algorithm constructs
+\usepackage{algorithm} % Provides algorithm environment
+\usepackage{algorithmicx}       % Provides algorithmic block
+\usepackage{algpseudocode}      % Option of algorithmicx package
+\renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}}
+\newcommand\Algphase[1]{%
+\vspace*{-.7\baselineskip}\Statex\hspace*{\dimexpr-\algorithmicindent-2pt\relax}\rule{\columnwidth}{0.4pt}%
+\Statex\hspace*{-\algorithmicindent}{#1}%
+\vspace*{-.7\baselineskip}\Statex\hspace*{\dimexpr-\algorithmicindent-2pt\relax}\rule{\columnwidth}{0.4pt}%
+}
+\newcommand{\algrule}[1][.4pt]{\par\vskip.5\baselineskip\hrule height #1\par\vskip.5\baselineskip}
+
+\newcommand{\code}[2]{
+  \subsection*{#1}
+  \lstinputlisting{#2}
+}
+
+\def\sectionautorefname{Sec.}
+\def\subsectionautorefname{Sec.}
+\def\subsubsectionautorefname{Sec.}
+\def\tableautorefname{Tab.}
+\def\equationautorefname{Eq.}
+\def\figureautorefname{Fig.}
+\def\algorithmautorefname{Alg.}
+
+% Patch to make equation autoref counter work
+\makeatletter
+\patchcmd\eq@setnumber{\stepcounter}{\refstepcounter}{}{%
+  \errmessage{Patching \noexpand\eq@setnumber failed}%
+}
+\makeatother
+
+\hypersetup{colorlinks=true,
+  pdftitle={Multi-Group Cross Section Generation with the OpenMC Monte Carlo Code},
+  pdfauthor={William Boyd, Adam Nelson, Paul Romano, Samuel Shaner, Benoit Forget and Kord Smith}}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Multi-Group Cross Section Generation with the OpenMC Monte Carlo Code}
+
+\author{William Boyd\corref{cor1}}
+\ead{wboyd@mit.edu}
+
+\author{Adam Nelson}
+\ead{nelson.adam@gmail.com}
+
+\author{Paul K. Romano}
+\ead{promano@anl.gov}
+
+\author{Samuel Shaner}
+\ead{shaner@mit.edu}
+
+\author{Benoit Forget\corref{}}
+\ead{bforget@mit.edu}
+
+\author{Kord Smith\corref{}}
+\ead{kord@mit.edu}
+
+\address{Massachusetts Institute of Technology, Department of Nuclear Science and Engineering, 77 Massachusetts Avenue, Building 24, Cambridge, MA 02139, United States\vspace{-8ex}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{abstract}
+
+\begin{keyword}
+Monte Carlo neutron transport, multi-group cross section generation
+\end{keyword}
+
+\end{frontmatter}
+
+\input{introduction}
+\input{software}
+\input{features}
+\input{conclusions}
+\input{acknowledgements}
+
+\section*{References}
+\bibliography{references}
+\bibliographystyle{annals}
+
+\end{document}
