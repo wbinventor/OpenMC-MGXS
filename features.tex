@@ -34,8 +34,36 @@ I hear it is unique that we can calculate micros?
 Up to tenth order scattering moment matrices.
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Delayed Constants}
+\label{subsec:delay-constants}
+
+\begin{table}[h!]
+  \centering
+  \caption{The delayed multi-group cross section types implemented by the \texttt{openmc.mgdxs} module.}
+  \small
+  \label{tab:mdgxs-types} 
+  \vspace{6pt}
+  \begin{tabular}{l l}
+  \toprule
+  \textbf{Class} &
+  \textbf{Description} \\
+  \midrule
+  \texttt{Beta} & Delayed neutron fraction \\
+  \texttt{ChiDelayed} & Delayed fission spectrum \\
+  \texttt{DelayedNuFissionXS} & Fission delayed neutron production \\
+  \texttt{DecayRate} & Delayed neutron precursors decay rate \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Delayed Constants}
+\label{subsec:delay-constants}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Isotropic in Lab Scattering}
 \label{subsec:iso-in-lab}
 
-For benchmarking with isotropic multi-group codes. Also useful more generally to quantify the impact of anisotropic scattering sources.
+A unique option for isotropic in lab scattering is implemented in the OpenMC code. The isotropic in lab -- abbreviated as \texttt{iso-in-lab} -- feature may be useful to quantify the ability of multi-group codes to capture anisotropic scattering effects with higher order scattering matrices or transport correction schemes. The iso-in-lab scattering feature is implemented as an optional attribute for each nuclide or element in a simulation. When iso-in-lab scattering is specified for a nuclide or element, the outgoing neutron energy is sampled from the scattering laws prescribed by the continuous energy cross section library, but the outgoing neutron direction of motion is sampled from an isotropic in lab distribution. 

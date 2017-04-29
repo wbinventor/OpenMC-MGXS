@@ -11,10 +11,7 @@
 \usepackage{subcaption}
 \usepackage{dblfloatfix}
 \usepackage{color}
-
 \usepackage{todonotes}
-
-
 \usepackage{etoolbox}
 \usepackage{listings}
 \usepackage{color}
@@ -31,6 +28,16 @@
 \newcommand{\code}[2]{
   \subsection*{#1}
   \lstinputlisting{#2}
+}
+
+\lstset{
+  basicstyle=\footnotesize\ttfamily,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape,
+  frame=single,
+  xleftmargin=0.8in,
+  xrightmargin=0.8in
 }
 
 % Patch to make equation autoref counter work
