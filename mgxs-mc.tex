@@ -1,0 +1,26 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{MGXS Generation with Monte Carlo}
+\label{sec:mgxs-mc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Uncertainty Propagation}
+\label{subsec:uncertainty-prop}
+
+As discussed in the preceding sections, MGXS are computed using arithmetic combinations of tally estimators for reaction rates and fluxes. Each tally estimator is a random variable with an associated uncertainty estimated by the variance of the sample mean. As a result, each multi-group cross section computed for a spatial zone and energy group is itself a random variable from a distribution with some unknown variance. It is therefore useful to estimate the uncertainty of MGXS computed from MC tallies in order to quantify whether the MGXS are known with enough precision for accurate multi-group calculations. 
+
+Estimates of the variance may be deduced from standard error propagation theory~\cite{bevington2003data}. The division arithmetic operator is primarily used to to compute MGXS from MC tallies. Consider two random variables $X$ and $Y$, generated from distributions with variances $\sigma_{X}^2$ and $\sigma_{Y}^2$ which are divided into a new random variable $Z$ with variance $\sigma_{Z}^2$:
+
+\begin{equation}
+\label{eqn:div-prop}
+\sigma_{Z}^{2} \approx Z^{2}\left[\left(\frac{\sigma_{X}}{X}\right)^{2} + \left(\frac{\sigma_{Y}}{Y}\right)^{2} - 2\frac{\sigma_{XY}}{Z}\right]
+\end{equation}
+
+\noindent The random variables $X$ and $Y$ may correspond to tallies for reaction rates and the flux, while $Z$ could correspond to a MGXS. The covariance $\sigma_{XY}$ of $X$ and $Y$ is given by:
+
+\begin{equation}
+\label{eqn:chap3-covariance}
+\sigma_{XY} = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])]
+\end{equation}
+
+\noindent where $\mathbb{E}[\cdot]$ is the expectation operator. The covariance is not generally computable using the standard formulation for a tally estimator in a Monte Carlo simulation. Although it would be possible to estimate the covariance using ensemble statistics, this is not often feasible. Instead, the covariance term in \autoref{eqn:div-prop} is typically neglected. In general, the random variables for reaction rates and fluxes in the same volume of phase space are highly correlated, such that a conservative estimate of the variance for MGXS is obtained by neglecting the covariance.
