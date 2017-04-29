@@ -1,6 +1,10 @@
 ## Emacs temporary files
 *~
 
+## Make
+*.cookie
+
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

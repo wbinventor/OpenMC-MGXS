@@ -8,21 +8,23 @@
 \subsection{Energy Condensation}
 \label{subsec:energy-condense}
 
-The \texttt{MGXS.get_condensed_xs(...)} method
+The module supports energy condensation in downstream data processing which is useful for exploring approximation bias in various energy group structures. For example, MGXS may be computed in some ``fine'' energy group structure and the tally data subsequently condensed to some coarser group structure \texttt{coarse_groups} for multi-group calculations with the \texttt{MGXS.get_condensed_xs(coarse_groups)} Python class method. Energy condensation may be performed to arbitrarily defined coarse group structures provided the coarse group boundaries coincide with boundaries in the fine group structure.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Pin-Wise Spatial Homogenization}
 \label{subsec:pinwise-homogenize}
 
-The \texttt{MGXS.get_subdomain_avg_xs(...)} method
+The \texttt{openmc.mgxs} module is designed to perform spatial homogenization on heterogeneous tally meshes for fine-mesh transport codes. In OpenMC parlance, MGXS may be computed for material, cell or universe spatial domains. In addition, the module supports MGXS calculations for repeated cell instances using distribcell spatial tally domains\cite{lax2014distribcell}. Spatial homogenization across some subset of distributed cell instances \texttt{cell_instances} can be performed using the \texttt{MGXS.get_subdomain_avg_xs(cell_instances)} Python class method.
+
+%The \texttt{openmc.mgxs} module may also perform spatial homogenization on structured Cartesian tally meshes for coarse mesh multi-group calculations..
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Microscopic MGXS}
 \label{subsec:micro-macro}
 
-Ummm, I hear it is unique that we can calculate micros?
+I hear it is unique that we can calculate micros?
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

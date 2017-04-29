@@ -1,0 +1,51 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{OpenMC}
+\label{sec:openmc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%
+\subsection{Overview}
+\label{subsec:openmc-overview}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Python API}
+\label{subsec:pyapi}
+
+\begin{itemize}[noitemsep]
+\item Python API\cite{boyd2016bigdata}
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{XML Input Generation}
+\label{subsec:pyapi}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Tally Data Processsing}
+\label{subsec:pyapi}
+
+\begin{itemize}[noitemsep]
+\item Python-based tools for ``big data'' applications
+  \begin{itemize}[noitemsep]
+    \item tally arithmetic
+    \item tally slicing/merging
+    \item distributed cell tallies\cite{lax2014distribcell}
+    \end{itemize}
+\item leverage the hell out of NumPy\cite{walt2011numpy}
+\item Pandas DataFrames\cite{mckinney2010pandas}
+\item intro features here and reference when describing \texttt{openmc.mgxs} later?
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Multi-Group Mode}
+\label{subsec:openmc-mg-mode}
+
+\begin{itemize}[noitemsep]
+\item support stochastic multi-group calculations
+\item multiple scattering representations (Legendre moments, discrete bins)
+\item use OpenMC to generate MGXS, then insert into identical model for MG calculation
+\item mention angular-dependent MGXS, or save for later paper?
+\end{itemize}
