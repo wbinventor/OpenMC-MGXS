@@ -250,10 +250,6 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \midrule
 
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & $\hat{\frac{1}{v_{k,g}}}$ & & \\
-  
-  \midrule
-
   \multirow{2}{*}{\bf Total} & \multirow{2}{*}{$\hat{\Sigma}_{t,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & \texttt{total} & spatial domain\ref{foot:domain}, \texttt{energy} \\
   \cline{3-5}
   & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
@@ -285,6 +281,10 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
   \midrule
   
   \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
+  
+  \midrule
+
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & $\hat{\frac{1}{v_{k,g}}}$ & & \\
 
   \midrule
   \multicolumn{5}{c}{\bf Delayed Neutron Constants} \\
@@ -332,35 +332,36 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
   \small
   \label{tab:mgxs-tally-estimators} 
   \vspace{6pt}
-  \begin{tabular}{l c c}
+  \begin{tabular}{l c c c}
   \toprule
   \textbf{Class} &
   \textbf{Analog} &
+  \textbf{Collision} &
   \textbf{Track-length} \\
   \midrule
-  \multicolumn{3}{c}{\bf Prompt Neutron Constants} \\
+  \multicolumn{4}{c}{\bf Prompt Neutron Constants} \\
   \midrule
-  \texttt{AbsorptionXS} & \cmark & \cmark \\
-  \texttt{CaptureXS} & \cmark & \cmark \\
-  \texttt{Chi} & \cmark & \xmark \\
-  \texttt{FissionXS} & \cmark & \cmark \\
-  \texttt{InverseVelocity} & \cmark & \xmark \\
-  \texttt{KappaFissionXS} & \cmark & \cmark \\
-  \texttt{MultiplicityMatrixXS} & \cmark & \xmark \\
-  \texttt{NuFissionMatrixXS} & \cmark & \xmark \\
-  \texttt{ScatterXS} & \cmark & \cmark \\
-  \texttt{ScatterMatrixXS} & \cmark & \xmark \\
-  \texttt{ScatterProbabilityMatrixXS} & \cmark & \xmark \\
-  \texttt{TotalXS} & \cmark & \xmark \\
-  \texttt{TransportXS} & \cmark & \xmark \\
+  \texttt{AbsorptionXS} & \cmark & \cmark & \cmark \\
+  \texttt{CaptureXS} & \cmark & \cmark & \cmark \\
+  \texttt{Chi} & \cmark & \xmark & \xmark \\
+  \texttt{FissionXS} & \cmark & \cmark & \cmark \\
+  \texttt{InverseVelocity} & \cmark & \cmark & \cmark \\
+  \texttt{KappaFissionXS} & \cmark & \cmark & \cmark \\
+  \texttt{MultiplicityMatrixXS} & \cmark & \xmark & \xmark \\
+  \texttt{NuFissionMatrixXS} & \cmark & \xmark & \xmark \\
+  \texttt{ScatterXS} & \cmark & \cmark & \cmark \\
+  \texttt{ScatterMatrixXS} & \cmark & \xmark & \xmark \\
+  \texttt{ScatterProbabilityMatrixXS} & \cmark & \xmark & \xmark \\
+  \texttt{TotalXS} & \cmark & \cmark & \cmark \\
+  \texttt{TransportXS} & \cmark & \xmark & \xmark \\
   \midrule
-  \multicolumn{3}{c}{\bf Delayed Neutron Constants} \\
+  \multicolumn{4}{c}{\bf Delayed Neutron Constants} \\
   \midrule
-  \texttt{Beta} & \cmark & \xmark \\
-  \texttt{ChiDelayed} & \cmark & \xmark \\
-  \texttt{DelayedNuFissionXS} & \cmark & \xmark \\
-  \texttt{DelayedNuFissionMatrixXS} & \cmark & \xmark \\
-  \texttt{DecayRate} & \cmark & \xmark \\
+  \texttt{Beta} & \cmark & \cmark & \cmark \\
+  \texttt{ChiDelayed} & \cmark & \xmark & \xmark \\
+  \texttt{DecayRate} & \cmark & \cmark & \cmark \\
+  \texttt{DelayedNuFissionXS} & \cmark & \cmark & \cmark \\
+  \texttt{DelayedNuFissionMatrixXS} & \cmark & \xmark & \xmark \\
   \bottomrule
 \end{tabular}
 \end{table}
