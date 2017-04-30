@@ -3,18 +3,173 @@
 \label{sec:mgxs-mc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{itemize}[noitemsep]
+\item how to compute chi
+\item scattering matrices
+  \begin{itemize}
+  \item simple formulation
+  \item consistent formulation
+  \end{itemize}
+\end{itemize}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Tally Types Needed for MGXS Generation}
 \label{subsec:tally-types}
 
-This section outlines the types of tallies needed to compute MGXS. 
+This section describes how multi-group cross sections may be computed using stochastic integration. In particular, this section outlines the types of OpenMC tallies needed to generate MGXS -- including the scores, filters and estimators for each tally -- and the arithmetic combinations used to combine different tallies.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Inner Product Notation}
+\label{subsubsec:tally-types-notation}
+
+The following sections use angle bracket notation $\langle \cdot , \cdot \rangle$ to represent inner products in phase space. This may correspond to integrals over incoming and/or outgoing energy, space, and angle. Using this notation, a tally estimator for reaction rate $x$ is represented as follows: 
+
+\begin{equation}
+\label{eqn:inner-prod}
+\langle \Sigma_x, \psi \rangle = \int_{V} \int_{S} \int_{E} \Sigma_{x}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\end{equation}
+
+\noindent This notation is specialized throughout this section with subscripts to indicate the subsets of phase space that are integrated over in the inner product. In particular, subscript $k$ refers to a volume integral over $V_{k}$ for some region of space $k$ for spatial homogenization, while subscript $g$ corresponds to an integral over energies with $E \in [E_{g}, E_{g-1}]$ for energy condensation. For example, the microscopic reaction rate for reaction $x$ by nuclide $i$ is denoted as:
+
+\begin{equation}
+\label{eqn:angle-rxn-rate}
+\langle \sigma_{x,i}, \psi \rangle_{k,g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \sigma_{x,i}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\end{equation}
+
+\noindent The inner product of a function with unity, such as the spatially-homogenized and energy-integrated flux is denoted by:
+
+\begin{equation}
+\label{eqn:angle-flux}
+\langle \psi \rangle_{k,g} \equiv \langle \psi, \mathbb{1} \rangle_{k,g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\end{equation}
+
+%Finally, the superscripts $a$ and $t\ell$ are given to those inner products computed with analog and track-length estimators, respectively -- \textit{i.e.}, $\langle \cdot,\cdot \rangle^{a}$ is an analog tally estimator and $\langle \cdot,\cdot \rangle^{t\ell}$ is a track-length tally estimator of the corresponding inner products.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{General Reaction Cross Section}
+\label{subsubsec:tally-types-gen-xs}
+
+A general spatially-homogenized and energy condensed macroscopic multi-group cross section for reaction $x$, spatial zone $k$ and energy group $g$ is simply the ratio of the group-wise reaction rates $\langle \Sigma_{x}, \psi \rangle_{k,g}$ and fluxes $\langle \psi \rangle_{k,g}$:
+
+\begin{equation}
+\label{eqn:general-macro}
+\hat{\Sigma}_{x,k,g} = \frac{\langle \Sigma_{x}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\end{equation}
+
+\noindent Likewise, a microscopic MGXS for nuclide $i$ can be computed as follows:
+
+\begin{equation}
+\label{eqn:general-micro}
+\hat{\sigma}_{x,i,k,g} = \frac{\langle \sigma_{x,i}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\end{equation}
+
+These estimators are used for reaction types which are only dependent on the incoming energy of a neutron, such as total and radiative capture reactions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Total Cross Section}
+\label{subsubsec:tally-types-tot-xs}
+
+The total macroscopic cross section $\Sigma_{t}$ is a special case of \autoref{eqn:general-micro}, with the total collision rate substituted into the numerator:
+
+\begin{equation}
+\label{eqn:total-macro}
+\hat{\Sigma}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\end{equation}
+
+A transport correction is often used to incorporate anisotropic scattering effects into the transport equation with an isotropic scattering kernel. An expression for the in-scatter approximation \cite{yamamoto2008simplified} to the transport correction is computed with an OpenMC tally for the first Legendre scattering moment:
+
+\begin{equation}
+\label{eqn:sigs1}
+\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \Sigma_{s1}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E',\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\end{equation}
+
+\noindent An analog estimator must be used in OpenMC since the tally includes an integral over the outgoing neutron energy. The spatially-homogenized and energy condensed transport-corrected total cross section is computed by summing over all incoming energy groups:
+
+\begin{equation}
+\label{eqn:transport-corr-macro}
+\Delta\hat{\Sigma}_{tr,k,g} = \displaystyle\sum\limits_{g'=1}^{G} \langle{\Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}}
+\end{equation}
+
+\noindent The transport correction is then subtracted from the group-wise total collision rate and normalized by the flux to compute the transport-corrected total cross section:
+
+\begin{equation}
+\label{eqn:sigt-transport-macro}
+\hat{\tilde{\Sigma}}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}
+\end{equation}
+
+Since the transport correction must be computed using an analog estimator, the total collision and flux in \autoref{eqn:sigt-transport-macro} must also be computed with analog estimators.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Scattering Matrix}
+\label{subsubsec:tally-types-scatt-mat}
+
+The isotropic scattering matrix is computed with an inner product of scattering reactions over both incoming and outgoing energies. An analog estimator must be used since the integral is dependent on the neutron's outgoing energy. Similar to the first Legendre moment in \autoref{eqn:sigs1}, the isotropic scattering moment is given by the following expression:
+
+\begin{equation}
+\label{eqn:sigs0}
+\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \Sigma_{s0}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\end{equation}
+
+\noindent The isotropic scattering matrix is then:
+
+\begin{equation}
+\label{eqn:scatter-macro}
+\hat{\Sigma}_{s,k,g'\rightarrow g} = \frac{\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g'}}
+\end{equation}
+
+\noindent The transport correction in \autoref{eqn:transport-corr-macro} can be applied by subtracting it from the diagonal elements in the matrix to compute the transport-corrected scattering matrix:
+
+\begin{equation}
+\label{eqn:scatter-trans-macro}
+\hat{\tilde{\Sigma}}_{s,k,g'\rightarrow g} = \frac{\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g} - \delta_{g,g'} \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g'}}
+\end{equation}
+
+Add discussion about consistent scattering formulation ...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Fission Production Cross Section}
+\label{subsubsec:tally-types-fiss-prod}
+
+The fission product macroscopic cross section $\nu\Sigma_{f}$ may be treated as a special case of \autoref{eqn:general-micro}, with estimators for the fission production rate and flux:
+
+\begin{equation}
+\label{eqn:nu-fiss-macro}
+\nu\hat{\Sigma}_{f,k,g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Fission Energy Spectrum}
+\label{subsubsec:tally-types-chi}
+
+Unlike the fission production cross section, the fission spectrum is dependent on the outgoing neutron energy and must be computed with analog estimators. The fission production matrix from group $g'$ into group $g$ is given by the following inner product:
+
+\begin{equation}
+\label{eqn:nu-fiss-energies}
+\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \nu\Sigma_{f}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\end{equation}
+
+\noindent The fission spectrum can then be computed from this tally by summing over incoming and outgoing energy groups:
+
+\begin{equation}
+\label{eqn:chi}
+\hat{\chi}_{k,g} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}
+\end{equation}
+
+\noindent This expression for the fission spectrum will result in a normalized discrete probability distribution for the energy of neutrons emitted from fission.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Summary}
+\label{subsec:tally-types-summary}
+
+The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \autoref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure for energy condensation is specified by \texttt{energy} and/or \texttt{energyout} filters in the table. The regions for spatial homogenization are specified by \texttt{material} or \texttt{cell} filters, although this could potentially include \texttt{universe}, \texttt{distribcell} and \texttt{mesh} filters as well.
 
 \begin{table}[h!]
   \centering
   \caption[Tally types for MGXS generation]{The types of tallies used in MGXS generation with OpenMC.}
   \scriptsize
-  \label{table:chap3-tally-types}
+  \label{tab:tally-types}
   \vspace{6pt}
   \begin{tabular}{ m{1.3cm} m{1cm} m{2cm} m{2.5cm} m{2.5cm} m{1.5cm} }
   \toprule
@@ -72,3 +227,8 @@ This section outlines the types of tallies needed to compute MGXS.
 
 \end{tabular}
 \end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Tally Estimators}
+\label{subsec:tally-est}

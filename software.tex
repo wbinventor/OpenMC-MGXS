@@ -35,15 +35,34 @@ The \texttt{openmc.mgxs} module uses an object-oriented design based on an abstr
 \end{tabular}
 \end{table}
 
+\begin{table}[h!]
+  \centering
+  \caption{The delayed multi-group cross section types implemented by the \texttt{openmc.mgdxs} module.}
+  \small
+  \label{tab:mdgxs-types} 
+  \vspace{6pt}
+  \begin{tabular}{l l}
+  \toprule
+  \textbf{Class} &
+  \textbf{Description} \\
+  \midrule
+  \texttt{Beta} & Delayed neutron fraction \\
+  \texttt{ChiDelayed} & Delayed fission spectrum \\
+  \texttt{DelayedNuFissionXS} & Fission delayed neutron production \\
+  \texttt{DecayRate} & Delayed neutron precursors decay rate \\
+  \bottomrule
+\end{tabular}
+\end{table}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{XML Input Generation}
 \label{subsec:xml-inputs}
 
-%\begin{itemize}[noitemsep]
-%\item workflow: create Python model, create \texttt{Library}, export to XML
-%\item code snippet?
-%\end{itemize}
+\begin{itemize}[noitemsep]
+\item workflow: create Python model, create \texttt{Library}, export to XML
+\item code snippet?
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Data Processing}
