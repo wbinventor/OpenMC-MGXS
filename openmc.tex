@@ -42,12 +42,12 @@ Two useful and related features in the OpenMC Python API for MGXS generation are
 \begin{figure}
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.8\linewidth]{figures/tally-merge}
+  \includegraphics[width=0.6\linewidth]{figures/tally-merge}
   \caption{}
 \end{subfigure}
 \begin{subfigure}{\textwidth}
   \centering
-  \includegraphics[width=0.8\linewidth]{figures/tally-slice}
+  \includegraphics[width=0.6\linewidth]{figures/tally-slice}
   \caption{}
 \end{subfigure}
 \caption{Two \texttt{Tally} objects for different spatial volumes are merged into a single \texttt{Tally} (a). A single \texttt{Tally} is sliced by spatial volume into two distinct \texttt{Tally} objects (b).}
@@ -75,7 +75,7 @@ A primary objective of tally arithmetic is to rapidly transform tally data with 
 
 \noindent The variables $X$ and $Y$ may correspond to tallies for reaction rates and the flux, while $Z$ could correspond to a MGXS.
 
-The covariance $\sigma_{XY}$ of $X$ is not generally computable using the standard formulation for a tally estimator in a Monte Carlo simulation. Although it would be possible to estimate the covariance using ensemble statistics, this is not often feasible. Instead, the covariance term in \autoref{eqn:div-prop} is neglected by the current implementation of tally arithmetic. In general, the random variables for reaction rates and fluxes in the same volume of phase space are highly correlated, such that a conservative estimate of the variance for MGXS is obtained by neglecting the covariance.
+The covariance $\sigma_{XY}$ is not generally computable using the standard formulation for a tally estimator in a Monte Carlo simulation. Although it would be possible to estimate the covariance using ensemble statistics, this is not often feasible. Instead, the covariance term in \autoref{eqn:div-prop} is neglected by the current implementation of tally arithmetic. In general, the random variables for reaction rates and fluxes in the same volume of phase space are highly correlated, such that a conservative estimate of the variance for MGXS is obtained by neglecting the covariance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Distributed Cell Tallies}
