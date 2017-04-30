@@ -18,6 +18,8 @@ The \texttt{openmc.mgxs} module uses an object-oriented design based on an abstr
   \textbf{Class} &
   \textbf{Description} \\
   \midrule
+  \multicolumn{2}{c}{\bf Prompt Neutron Constants} \\
+  \midrule
   \texttt{AbsorptionXS} & Absorption \\
   \texttt{CaptureXS} & Radiative capture \\
   \texttt{Chi} & Fission emission spectrum \\
@@ -31,20 +33,8 @@ The \texttt{openmc.mgxs} module uses an object-oriented design based on an abstr
   \texttt{ScatterProbabilityMatrixXS} & Scattering probability matrix \\
   \texttt{TotalXS} & Total collision \\
   \texttt{TransportXS} & Transport-corrected total collision \\
-  \bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[h!]
-  \centering
-  \caption{The delayed multi-group cross section types implemented by the \texttt{openmc.mgdxs} module.}
-  \small
-  \label{tab:mdgxs-types} 
-  \vspace{6pt}
-  \begin{tabular}{l l}
-  \toprule
-  \textbf{Class} &
-  \textbf{Description} \\
+  \midrule
+  \multicolumn{2}{c}{\bf Delayed Neutron Constants} \\
   \midrule
   \texttt{Beta} & Delayed neutron fraction \\
   \texttt{ChiDelayed} & Delayed fission spectrum \\
