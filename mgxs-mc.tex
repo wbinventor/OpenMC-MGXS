@@ -3,15 +3,6 @@
 \label{sec:mgxs-mc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{itemize}[noitemsep]
-\item how to compute chi
-\item scattering matrices
-  \begin{itemize}
-  \item simple formulation
-  \item consistent formulation
-  \end{itemize}
-\end{itemize}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Tally Types Needed for MGXS Generation}
@@ -88,17 +79,47 @@ A transport correction is often used to incorporate anisotropic scattering effec
 
 \begin{equation}
 \label{eqn:transport-corr-macro}
-\Delta\hat{\Sigma}_{tr,k,g} = \displaystyle\sum\limits_{g'=1}^{G} \langle{\Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}}
+\hat{\Sigma}_{tr,k,g} = \displaystyle\sum\limits_{g'=1}^{G} \langle{\Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}}
 \end{equation}
 
 \noindent The transport correction is then subtracted from the group-wise total collision rate and normalized by the flux to compute the transport-corrected total cross section:
 
 \begin{equation}
 \label{eqn:sigt-transport-macro}
-\hat{\tilde{\Sigma}}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}
+\hat{\tilde{\Sigma}}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
 Since the transport correction must be computed using an analog estimator, the total collision and flux in \autoref{eqn:sigt-transport-macro} must also be computed with analog estimators.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Multiplicity Matrix}
+\label{subsubsec:tally-types-mult-mat}
+
+The multiplicity is calculated as
+
+\begin{equation}
+\langle \upsilon \sigma_{s,g'\rightarrow g} \phi \rangle = \int_{r \in D} dr \int_{4\pi} d\Omega' \int_{E_{g'}}^{E_{g'-1}} dE' \int_{4\pi} d\Omega \int_{E_g}^{E_{g-1}} dE \; \sum_i \upsilon_i \sigma_i (r, E' \rightarrow E, \Omega' \cdot \Omega) \psi(r, E', \Omega') 
+\end{equation}
+
+\begin{equation}
+\langle \upsilon \sigma_{s,g'\rightarrow g} \phi \rangle = \int_{r \in D} dr \int_{4\pi} d\Omega' \int_{E_{g'}}^{E_{g'-1}} dE' \int_{4\pi} d\Omega \int_{E_g}^{E_{g-1}} dE \; \sum_i \upsilon_i \sigma_i (r, E' \rightarrow E, \Omega' \cdot \Omega) \psi(r, E', \Omega')
+\end{equation}
+
+\begin{equation}
+\langle \sigma_{s,g'\rightarrow g} \phi \rangle = \int_{r \in D} dr \int_{4\pi} d\Omega' \int_{E_{g'}}^{E_{g'-1}} dE' \int_{4\pi} d\Omega \int_{E_g}^{E_{g-1}} dE \; \sum_i \upsilon_i \sigma_i (r, E' \rightarrow E, \Omega' \cdot \Omega) \psi(r, E', \Omega') \\
+\end{equation}
+
+\begin{equation}
+\upsilon_{g'\rightarrow g} = \frac{\langle \upsilon \sigma_{s,g'\rightarrow g} \rangle}{\langle \sigma_{s,g'\rightarrow g} \rangle}
+\end{equation}
+
+\noindent where $\upsilon_i$ is the multiplicity for the $i^{th}$ reaction.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Scattering Probability Matrix}
+\label{subsubsec:tally-types-scatt-prob-mat}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Scattering Matrix}
@@ -114,15 +135,33 @@ The isotropic scattering matrix is computed with an inner product of scattering 
 \noindent The isotropic scattering matrix is then:
 
 \begin{equation}
-\label{eqn:scatter-macro}
+\label{eqn:scatt-macro}
 \hat{\Sigma}_{s,k,g'\rightarrow g} = \frac{\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g'}}
 \end{equation}
 
 \noindent The transport correction in \autoref{eqn:transport-corr-macro} can be applied by subtracting it from the diagonal elements in the matrix to compute the transport-corrected scattering matrix:
 
 \begin{equation}
-\label{eqn:scatter-trans-macro}
-\hat{\tilde{\Sigma}}_{s,k,g'\rightarrow g} = \frac{\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g} - \delta_{g,g'} \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g'}}
+\label{eqn:scatt-trans-macro}
+\hat{\tilde{\Sigma}}_{s,k,g'\rightarrow g} = \frac{\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g} - \delta_{g,g'} \hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g'}}
+\end{equation}
+
+%To incorporate the effect of neutron multiplication from $(n,xn)$ reactions in the above relation, the nu parameter can be set to `True`.
+
+An alternative ``consistent'' form of the scattering matrix can be computed as the product of the scatter cross section and group-to-group scattering probabilities. Unlike the formulation in \autoref{eqn:scatt-macro}, the consistent formulation is computed from the groupwise scattering cross section which uses a track-length estimator. This ensures that reaction rate balance is exactly preserved with a total cross section (\autoref{eqn:total-macro} computed using a tracklength estimator.
+
+For a scattering probability matrix $P_{s,\ell,g'\rightarrow g}$ and scattering cross section $\sigma_s (r, E)$ for incoming energy group $[E_{g'},E_{g'-1}]$ and outgoing energy group $[E_g,E_{g-1}]$, the Legendre scattering moments are calculated as:
+
+\begin{equation}
+\label{eqn:scatt-mat-consistent}
+\Sigma_{s,\ell,g'\rightarrow g} = \sigma_s (r, E) \times P_{s,\ell,g'\rightarrow g}
+\end{equation}
+
+To incorporate the effect of neutron multiplication from $(n,xn)$ reactions ...
+
+\begin{equation}
+\label{eqn:nuscatt-mat-consistent}
+\sigma_{s,\ell,g'\rightarrow g} = \upsilon_{g'\rightarrow g} \times \sigma_s (r, E) \times P_{s,\ell,g'\rightarrow g}
 \end{equation}
 
 Add discussion about consistent scattering formulation ... and about Legendre moments ...
@@ -179,7 +218,7 @@ Unlike the fission production cross section, the fission spectrum is dependent o
 \subsection{Summary}
 \label{subsec:tally-types-summary}
 
-The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \autoref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure for energy condensation is specified by \texttt{energy} and/or \texttt{energyout} filters in the table. The regions for spatial homogenization are specified by \texttt{material} or \texttt{cell} filters, although this could potentially include \texttt{universe}, \texttt{distribcell} and \texttt{mesh} filters as well.
+The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \autoref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure for energy condensation is specified by \texttt{energy} and/or \texttt{energyout} filters in the table. A material, cell, universe or mesh domain is specified by an appropriate filter for spatial homogenization.
 
 \begin{table}[h!]
   \centering
@@ -197,43 +236,43 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \midrule
 
-  \multirow{2}{*}{\bf General} & \multirow{2}{*}{$\Sigma_{x,k,g}$} & $\langle \Sigma_{x}, \psi \rangle_{k,g}$ & reaction $x$ & spatial domain, \texttt{energy} \\
+  \multirow{2}{*}{\bf General} & \multirow{2}{*}{$\Sigma_{x,k,g}$} & $\langle \Sigma_{x}, \psi \rangle_{k,g}$ & reaction $x$ & spatial domain\footnotemark, \texttt{energy} \\
   \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & {\texttt{flux}} & spatial domain, \texttt{energy} \\
+  & & $\langle \psi \rangle_{k,g}$ & {\texttt{flux}} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
   \midrule
 
   \multirow{2}{*}{\bf Total} & \multirow{2}{*}{$\Sigma_{t,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & \texttt{total} & spatial domain, \texttt{energy} \\
   \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain, \texttt{energy} \\
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{domain}, \texttt{energy} \\
 
   \midrule
 
-  \multirow{3}{*}{\parbox{1.5cm}{\bf Radiative Capture}} & \multirow{3}{*}{$\Sigma_{\gamma,k,g}$} & $\langle \Sigma_{a}, \psi \rangle_{k,g}$ & \texttt{absorption} & spatial domain, \texttt{energy} \\
+  \multirow{3}{*}{\parbox{1.5cm}{\bf Radiative Capture}} & \multirow{3}{*}{$\Sigma_{\gamma,k,g}$} & $\langle \Sigma_{a}, \psi \rangle_{k,g}$ & \texttt{absorption} & spatial domain\ref{foot:domain}, \texttt{energy} \\
   \cline{3-5}
-  & & $\langle \Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{fission} & spatial domain, \texttt{energy} \\
+  & & $\langle \Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{fission} & spatial domain\ref{foot:domain}, \texttt{energy} \\
   \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain, \texttt{energy} \\
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
   \midrule
 
-  \textbf{\parbox{1.5cm}{\bf Transport Correction}} & $\Sigma_{tr,k,g}$ & $\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-0} & spatial domain, \texttt{energyout} \\
+  \textbf{\parbox{1.5cm}{\bf Transport Correction}} & $\Sigma_{tr,k,g}$ & $\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-0} & spatial domain\ref{foot:domain}, \texttt{energyout} \\
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}{$\Sigma_{s,k,g'\rightarrow g}$} & $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-0} & spatial domain, \texttt{energy}, \texttt{energyout} \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}{$\Sigma_{s,k,g'\rightarrow g}$} & $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-0} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
   \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain, \texttt{energy} \\
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\Sigma_{f,k,g}$} & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{nu-fission} & spatial domain, \texttt{energy} \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\Sigma_{f,k,g}$} & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy} \\
   \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain, \texttt{energy} \\
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
   \midrule
   
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\chi_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-fission} & spatial domain, \texttt{energy}, \texttt{energyout} \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\chi_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
 
   \midrule
 
@@ -255,6 +294,8 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
 \end{tabular}
 \end{table}
+
+\footnotetext{\label{foot:domain} A \texttt{material}, \texttt{cell}, \texttt{distribcell}, \texttt{universe} or \texttt{mesh} filter.}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
