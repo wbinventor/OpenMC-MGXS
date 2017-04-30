@@ -158,6 +158,22 @@ Unlike the fission production cross section, the fission spectrum is dependent o
 
 \noindent This expression for the fission spectrum will result in a normalized discrete probability distribution for the energy of neutrons emitted from fission.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Delayed Neutron Fraction}
+\label{subsubsec:tally-types-beta}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Delayed Neutron Precursor Decay Rate}
+\label{subsubsec:tally-types-lambda}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Delayed Fission Production Cross Section}
+\label{subsubsec:tally-types-delay-fiss-prod}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Inverse Velocity}
+\label{subsubsec:tally-types-inv-vel}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Summary}
@@ -171,58 +187,70 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
   \scriptsize
   \label{tab:tally-types}
   \vspace{6pt}
-  \begin{tabular}{ m{1.3cm} m{1cm} m{2cm} m{2.5cm} m{2.5cm} m{1.5cm} }
+  \begin{tabular}{ m{2.3cm} m{1.2cm} m{2cm} m{2.5cm} l }
   \toprule
   {\bf Name} &
   {\bf Symbol} &
   {\bf Tally} &
   {\bf Score} &
-  {\bf Filters} &
-  {\bf Estimator} \\
+  {\bf Filters} \\
 
-  \specialrule{.2em}{.1em}{.1em}
+  \midrule
 
-  \multirow{2}{*}[-0.7em]{\bf General} & \multirow{2}{*}[-0.7em]{$\Sigma_{x,k,g}$} & $\langle \Sigma_{x}, \psi \rangle_{k,g}$ & reaction $x$ & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{track-length} \\
-  \cline{3-6}
-  & & $\langle \psi \rangle_{k,g}$ & {\texttt{flux}} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{track-length} \\
+  \multirow{2}{*}{\bf General} & \multirow{2}{*}{$\Sigma_{x,k,g}$} & $\langle \Sigma_{x}, \psi \rangle_{k,g}$ & reaction $x$ & spatial domain, \texttt{energy} \\
+  \cline{3-5}
+  & & $\langle \psi \rangle_{k,g}$ & {\texttt{flux}} & spatial domain, \texttt{energy} \\
 
-  \specialrule{.2em}{.1em}{.1em}
+  \midrule
 
-  \multirow{2}{*}[-0.7em]{\bf Total} & \multirow{2}{*}[-0.7em]{$\Sigma_{t,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & \texttt{total} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{track-length} \\
-  \cline{3-6}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{track-length} \\
+  \multirow{2}{*}{\bf Total} & \multirow{2}{*}{$\Sigma_{t,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & \texttt{total} & spatial domain, \texttt{energy} \\
+  \cline{3-5}
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain, \texttt{energy} \\
 
-  \specialrule{.2em}{.1em}{.1em}
+  \midrule
 
-  \multirow{3}{*}[-1em]{\parbox{1.5cm}{\bf Transport-Corrected Total}} & \multirow{3}{*}[-1em]{$\hat{\Sigma}_{tr,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & \texttt{total} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{analog} \\
-  \cline{3-6}
-  & & $\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-scatter-1} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energyout}} & \texttt{analog} \\
-  \cline{3-6}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & \parbox{2cm}{ \texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{analog} \\
+  \multirow{3}{*}{\parbox{1.5cm}{\bf Radiative Capture}} & \multirow{3}{*}{$\Sigma_{\gamma,k,g}$} & $\langle \Sigma_{a}, \psi \rangle_{k,g}$ & \texttt{absorption} & spatial domain, \texttt{energy} \\
+  \cline{3-5}
+  & & $\langle \Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{fission} & spatial domain, \texttt{energy} \\
+  \cline{3-5}
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain, \texttt{energy} \\
 
-  \specialrule{.2em}{.1em}{.1em}
+  \midrule
 
-  \multirow{2}{*}[-0.5em]{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}[-0.5em]{$\Sigma_{s,k,g'\rightarrow g}$} & $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-scatter-0} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy} \texttt{energyout}} & \texttt{analog} \\
-  \cline{3-6}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{analog} \\
+  \textbf{\parbox{1.5cm}{\bf Transport Correction}} & $\Sigma_{tr,k,g}$ & $\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-0} & spatial domain, \texttt{energyout} \\
 
-  \specialrule{.2em}{.2em}{.2em}
+  \midrule
 
-  \multirow{3}{*}[-1em]{\parbox{1.5cm}{\bf Transport-Corrected Scattering Matrix}} & \multirow{3}{*}[-1em]{$\Sigma_{s,k,g'\rightarrow g}$} & $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-scatter-0} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy} \texttt{energyout}} & \texttt{analog} \\
-  \cline{3-6}
-  & & $\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-scatter-1} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energyout}} & \texttt{analog} \\
-  \cline{3-6}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{analog} \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}{$\Sigma_{s,k,g'\rightarrow g}$} & $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-0} & spatial domain, \texttt{energy}, \texttt{energyout} \\
+  \cline{3-5}
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain, \texttt{energy} \\
 
-  \specialrule{.2em}{.1em}{.1em}
+  \midrule
 
-  \multirow{2}{*}[-0.5em]{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}[-0.5em]{$\nu\Sigma_{f,k,g}$} & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{nu-fission} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{track-length} \\
-  \cline{3-6}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy}} & \texttt{track-length} \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\Sigma_{f,k,g}$} & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{nu-fission} & spatial domain, \texttt{energy} \\
+  \cline{3-5}
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain, \texttt{energy} \\
 
-  \specialrule{.2em}{.1em}{.1em}
+  \midrule
   
-  \parbox{1.5cm}{\bf Fission Spectrum} & $\chi_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-fission} & \parbox{2cm}{\texttt{material}/\texttt{cell} \texttt{energy} \texttt{energyout}} & \texttt{analog} \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\chi_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-fission} & spatial domain, \texttt{energy}, \texttt{energyout} \\
+
+  \midrule
+
+  \parbox{1.5cm}{\parbox{1.9cm}{\bf Delayed Fission Spectrum}} & & & \\
+
+  \midrule
+
+  \parbox{1.5cm}{\parbox{2.3cm}{\bf Delayed Prescursor Decay Rate}} & & & \\
+
+  \midrule
+
+  \parbox{1.5cm}{\parbox{2cm}{\bf Delayed Neutron Fraction}} & & & \\
+
+  \midrule
+
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & & & \\
+
   \midrule
 
 \end{tabular}
@@ -232,3 +260,8 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Tally Estimators}
 \label{subsec:tally-est}
+
+\begin{itemize}[noitemsep]
+\item Table of the tally estimators acceptable for each MGXS type
+\item Mention tally estimators can be toggled? Or discuss in software design?
+\end{itemize}
