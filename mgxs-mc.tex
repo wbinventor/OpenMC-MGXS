@@ -170,8 +170,6 @@ An alternative ``consistent'' form of the scattering matrix can be computed as t
 \hat{\Sigma}_{s\ell,k,g'\rightarrow g} = \hat{\upsilon}_{k,g'\rightarrow g} \times \hat{\Sigma}_{s,k,g} \times \hat{P}_{s\ell,k,g'\rightarrow g}
 \end{equation}
 
-and about Legendre moments ...
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Fission Production Cross Section}
 \label{subsubsec:tally-types-fiss-prod}
@@ -203,6 +201,10 @@ The fission production matrix from group $g'$ into group $g$ is given by the fol
 
 \noindent This expression produces a normalized discrete probability distribution for the energy of neutrons emitted from fission. The fission spectrum is dependent on the outgoing neutron energy and must be computed with analog tally estimators.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Inverse Velocity}
+\label{subsubsec:tally-types-inv-vel}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Delayed Neutron Fraction}
 \label{subsubsec:tally-types-beta}
@@ -215,16 +217,12 @@ The fission production matrix from group $g'$ into group $g$ is given by the fol
 \subsubsection{Delayed Fission Production Cross Section}
 \label{subsubsec:tally-types-delay-fiss-prod}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Inverse Velocity}
-\label{subsubsec:tally-types-inv-vel}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Summary}
 \label{subsec:tally-types-summary}
 
-The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \autoref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure for energy condensation is specified by \texttt{energy} and/or \texttt{energyout} filters in the table. A material, cell, universe or mesh domain is specified by an appropriate filter for spatial homogenization.
+The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \autoref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by \texttt{energy} and/or \texttt{energyout} filters in the table. A spatial homogenization domain is specified by a \texttt{material}, \texttt{cell}, \texttt{universe} or \texttt{mesh} filter.
 
 \begin{table}[h!]
   \centering
@@ -268,10 +266,17 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}{$\hat{\Sigma}_{s,k,g'\rightarrow g}$} & $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-0} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-$\ell$} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
   \cline{3-5}
   & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
+  \midrule
+
+  \multirow{3}{*}{\parbox{1.5cm}{\bf Scattering Matrix (consistent)}} & \multirow{3}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g}$ & \texttt{scatter} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \cline{3-5}
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \cline{3-5}
+  & & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-$\ell$} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
   \midrule
 
   \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}$} & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy} \\
