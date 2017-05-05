@@ -3,18 +3,13 @@
 \label{sec:mgxs-mc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Tally Types Needed for MGXS Generation}
-\label{subsec:tally-types}
-
 This section describes how multi-group cross sections may be computed using stochastic integration. In particular, this section outlines the types of OpenMC tallies needed to generate MGXS -- including the scores, filters and estimators for each tally -- and the arithmetic combinations used to combine different tallies.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Inner Product Notation}
+\subsection{Inner Product Notation}
 \label{subsubsec:tally-types-notation}
 
-The following sections use angle bracket notation $\langle \cdot , \cdot \rangle$ to represent inner products in phase space. This may correspond to integrals over incoming and/or outgoing energy, space, and angle. Using this notation, a tally estimator for reaction rate $x$ is represented as follows: 
+The following sections use angle bracket notation $\langle \cdot , \cdot \rangle$ to represent inner products in phase space. This may correspond to integrals over incoming and/or outgoing energy, space, and angle. Using this notation, a tally estimator for reaction rate $x$ is represented as follows:
 
 \begin{equation}
 \label{eqn:inner-prod}
@@ -36,7 +31,7 @@ The following sections use angle bracket notation $\langle \cdot , \cdot \rangle
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{General Reaction Cross Section}
+\subsection{General Reaction Cross Section}
 \label{subsubsec:tally-types-gen-xs}
 
 A general spatially-homogenized and energy condensed macroscopic multi-group cross section for reaction $x$, spatial zone $k$ and energy group $g$ is simply the ratio of the group-wise reaction rates $\langle \Sigma_{x}, \psi \rangle_{k,g}$ and fluxes $\langle \psi \rangle_{k,g}$:
@@ -56,7 +51,7 @@ A general spatially-homogenized and energy condensed macroscopic multi-group cro
 \noindent These estimators are used for reaction types which are only dependent on the incoming energy of a neutron.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Total Cross Section}
+\subsection{Total Cross Section}
 \label{subsubsec:tally-types-tot-xs}
 
 The total cross section $\hat{\Sigma}_{t}$ is a special case of \autoref{eqn:general-macro}, with the collision rate substituted into the numerator:
@@ -90,7 +85,7 @@ A transport correction is often used to incorporate anisotropic scattering effec
 It should be noted that an analog tally estimator must be used to compute the transport correction, since \autoref{eqn:sigs1} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \autoref{eqn:sigt-transport-macro} must also be computed with analog tally estimators.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Scattering Multiplicity Matrix}
+\subsection{Scattering Multiplicity Matrix}
 \label{subsubsec:tally-types-mult-mat}
 
 The rate of scattering multiplicity reactions (\textit{i.e.}, $(n,xn)$ reactions) is given by the following expression:
@@ -108,7 +103,7 @@ The rate of scattering multiplicity reactions (\textit{i.e.}, $(n,xn)$ reactions
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Scattering Probability Matrix}
+\subsection{Scattering Probability Matrix}
 \label{subsubsec:tally-types-scatt-prob-mat}
 
 The group-to-group scattering probabilities are calculated as:
@@ -128,7 +123,7 @@ The group-to-group scattering probabilities are calculated as:
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Scattering Matrix}
+\subsection{Scattering Matrix}
 \label{subsubsec:tally-types-scatt-mat}
 
 The isotropic scattering matrix is computed with an inner product of scattering reactions over both incoming and outgoing energies. The scattering matrix for the $\ell$\textsuperscript{th} Legendgre moment is given by the following expression:
@@ -145,7 +140,7 @@ The isotropic scattering matrix is computed with an inner product of scattering 
 \hat{\Sigma}_{s\ell,k,g'\rightarrow g} = \frac{\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g'}}
 \end{equation}
 
-\noindent Analog tally estimators must be used since the scattering moments depend on the neutron's outgoing energy. 
+\noindent Analog tally estimators must be used since the scattering moments depend on the neutron's outgoing energy.
 
 A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,k,g'\rightarrow g}$ may be computed for multi-group transport codes with isotropic scattering kernels. In particular, the transport correction in \autoref{eqn:transport-corr-macro} can be applied by subtracting it from the diagonal elements in the matrix to compute the transport-corrected isotropic scattering matrix:
 
@@ -171,7 +166,7 @@ An alternative ``consistent'' form of the scattering matrix can be computed as t
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Fission Production Cross Section}
+\subsection{Fission Production Cross Section}
 \label{subsubsec:tally-types-fiss-prod}
 
 The fission product macroscopic cross section $\nu\hat{\Sigma}_{f,k,g}$ may be treated as a special case of \autoref{eqn:general-macro}, with estimators for the fission production rate and flux:
@@ -182,7 +177,7 @@ The fission product macroscopic cross section $\nu\hat{\Sigma}_{f,k,g}$ may be t
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Fission Energy Spectrum}
+\subsection{Fission Energy Spectrum}
 \label{subsubsec:tally-types-chi}
 
 The fission production matrix from group $g'$ into group $g$ is given by the following inner product:
@@ -202,19 +197,19 @@ The fission production matrix from group $g'$ into group $g$ is given by the fol
 \noindent This expression produces a normalized discrete probability distribution for the energy of neutrons emitted from fission. The fission spectrum is dependent on the outgoing neutron energy and must be computed with analog tally estimators.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Inverse Velocity}
+\subsection{Inverse Velocity}
 \label{subsubsec:tally-types-inv-vel}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Delayed Neutron Fraction}
+\subsection{Delayed Neutron Fraction}
 \label{subsubsec:tally-types-beta}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Delayed Neutron Precursor Decay Rate}
+\subsection{Delayed Neutron Precursor Decay Rate}
 \label{subsubsec:tally-types-lambda}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Delayed Fission Production Cross Section}
+\subsection{Delayed Fission Production Cross Section}
 \label{subsubsec:tally-types-delay-fiss-prod}
 
 
@@ -284,9 +279,9 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
   & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
   \midrule
-  
+
   \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
-  
+
   \midrule
 
   \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & $\hat{\frac{1}{v_{k,g}}}$ & & \\
@@ -319,54 +314,3 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 \end{table}
 
 \footnotetext{\label{foot:domain} A \texttt{material}, \texttt{cell}, \texttt{distribcell}, \texttt{universe} or \texttt{mesh} filter.}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Tally Estimators}
-\label{subsec:tally-est}
-
-\begin{itemize}[noitemsep]
-\item Table of the tally estimators acceptable for each MGXS type
-\item Mention tally estimators can be toggled? Or discuss in software design?
-\item Add footnote mentioning consistent scattering formulation
-\end{itemize}
-
-\begin{table}[h!]
-  \centering
-  \caption{The tally estimators supported by each MGXS type.}
-  \small
-  \label{tab:mgxs-tally-estimators} 
-  \vspace{6pt}
-  \begin{tabular}{l c c c}
-  \toprule
-  \textbf{Class} &
-  \textbf{Analog} &
-  \textbf{Collision} &
-  \textbf{Track-length} \\
-  \midrule
-  \multicolumn{4}{c}{\bf Prompt Neutron Constants} \\
-  \midrule
-  \texttt{AbsorptionXS} & \cmark & \cmark & \cmark \\
-  \texttt{CaptureXS} & \cmark & \cmark & \cmark \\
-  \texttt{Chi} & \cmark & \xmark & \xmark \\
-  \texttt{FissionXS} & \cmark & \cmark & \cmark \\
-  \texttt{InverseVelocity} & \cmark & \cmark & \cmark \\
-  \texttt{KappaFissionXS} & \cmark & \cmark & \cmark \\
-  \texttt{MultiplicityMatrixXS} & \cmark & \xmark & \xmark \\
-  \texttt{NuFissionMatrixXS} & \cmark & \xmark & \xmark \\
-  \texttt{ScatterXS} & \cmark & \cmark & \cmark \\
-  \texttt{ScatterMatrixXS} & \cmark & \xmark & \xmark \\
-  \texttt{ScatterProbabilityMatrixXS} & \cmark & \xmark & \xmark \\
-  \texttt{TotalXS} & \cmark & \cmark & \cmark \\
-  \texttt{TransportXS} & \cmark & \xmark & \xmark \\
-  \midrule
-  \multicolumn{4}{c}{\bf Delayed Neutron Constants} \\
-  \midrule
-  \texttt{Beta} & \cmark & \cmark & \cmark \\
-  \texttt{ChiDelayed} & \cmark & \xmark & \xmark \\
-  \texttt{DecayRate} & \cmark & \cmark & \cmark \\
-  \texttt{DelayedNuFissionXS} & \cmark & \cmark & \cmark \\
-  \texttt{DelayedNuFissionMatrixXS} & \cmark & \xmark & \xmark \\
-  \bottomrule
-\end{tabular}
-\end{table}
