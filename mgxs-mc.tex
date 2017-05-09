@@ -176,6 +176,15 @@ The fission product macroscopic cross section $\nu\hat{\Sigma}_{f,k,g}$ may be t
 \nu\hat{\Sigma}_{f,k,g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
+\noindent The prompt and delayed components of the fission production cross section, $\nu\hat{\Sigma}_{f,k,g}^{p}$ and $\nu\hat{\Sigma}_{f,k,g}^{d}$, can be computed in a similar manner:
+
+\begin{equation}
+\label{eqn:nu-fiss-macro-specific}
+\nu\hat{\Sigma}_{f,k,g}^{p} = \frac{\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}} \qquad \qquad \nu\hat{\Sigma}_{f,k,g}^{d} = \frac{\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\end{equation}
+
+\noindent Where the superscript $p$ is used to denote prompt neutrons and the superscript $d$ is used to denote delayed neutrons of the specific precursor group.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fission Energy Spectrum}
 \label{subsubsec:tally-types-chi}
@@ -194,24 +203,47 @@ The fission production matrix from group $g'$ into group $g$ is given by the fol
 \hat{\chi}_{k,g} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}
 \end{equation}
 
-\noindent This expression produces a normalized discrete probability distribution for the energy of neutrons emitted from fission. The fission spectrum is dependent on the outgoing neutron energy and must be computed with analog tally estimators.
+\noindent This expression produces a normalized discrete probability distribution for the energy of neutrons emitted from fission. The fission spectrum is dependent on the outgoing neutron energy and must be computed with analog tally estimators. Similar to the fission production cross section, the fission energy spectrum can also be computed for the separate prompt and delayed component as follows:
+
+\begin{equation}
+\label{eqn:chi-specific}
+\hat{\chi}_{k,g}^{p} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}} \qquad \qquad \hat{\chi}_{k,g}^{d} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}}
+\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inverse Velocity}
 \label{subsubsec:tally-types-inv-vel}
 
+The inverse velocity $\hat{\upsilon}_{k,g}^{-1}$ is a useful parameter for kinetics calculations and is computed as:
+
+\begin{equation}
+\label{eqn:inverse-velocity}
+\hat{\upsilon}_{k,g}^{-1} = \frac{\langle \upsilon^{-1}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\end{equation}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Delayed Neutron Fraction}
 \label{subsubsec:tally-types-beta}
+
+The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another useful parameter for kinetics calculations. It is computed as:
+
+\begin{equation}
+\label{eqn:beta}
+\hat{\beta}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d \phi \rangle}{\langle \nu \Sigma_f \phi \rangle}
+\end{equation}
+
+\noindent While the delayed neutron fraction is typically not computed as an energy dependent quantity, the energy group subscript is included for consistency.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Delayed Neutron Precursor Decay Rate}
 \label{subsubsec:tally-types-lambda}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Delayed Fission Production Cross Section}
-\label{subsubsec:tally-types-delay-fiss-prod}
+The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed as:
 
+\begin{equation}
+\label{eqn:beta}
+\hat{\lambda}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d \phi \rangle}{\Big\langle \frac{1}{\lambda^{d}} \nu \Sigma_f^d \phi \Big\rangle}
+\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Summary}
@@ -233,8 +265,6 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
   {\bf Score} &
   {\bf Filters} \\
 
-  \midrule
-  \multicolumn{5}{c}{\bf Prompt Neutron Constants} \\
   \midrule
 
   \multirow{2}{*}{\bf General} & \multirow{2}{*}{$\hat{\Sigma}_{x,k,g}$} & $\langle \Sigma_{x}, \psi \rangle_{k,g}$ & reaction $x$ & spatial domain\footnotemark, \texttt{energy} \\
@@ -284,29 +314,46 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \midrule
 
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & $\hat{\frac{1}{v_{k,g}}}$ & & \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & \multirow{2}{*}{$\hat{\upsilon}_{k,g}^{-1}$} & $\langle \upsilon^{-1}, \psi \rangle_{k,g}$ & \texttt{total} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \cline{3-5}
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
   \midrule
-  \multicolumn{5}{c}{\bf Delayed Neutron Constants} \\
+  \multicolumn{5}{c}{\bf Prompt Neutron Specific Constants} \\
   \midrule
 
-  \parbox{1.5cm}{\bf Fission \hspace{1cm} Production} & $\nu\hat{\Sigma}_{f,k,g}^{d}$ & & \\
-
-  \midrule
-
-  \parbox{1.5cm}{\bf Fission \hspace{1cm} Production Matrix} & $\nu\hat{\Sigma}_{f,k,g'\rightarrow g}^{d}$ & & \\
-
-  \midrule
-
-  \parbox{1.5cm}{\bf Fission \hspace{1cm} Spectrum} & $\hat{\chi}_{k,g}^{d}$ & & \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{p}$} & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}$ & \texttt{prompt-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \cline{3-5}
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
   \midrule
 
-  \parbox{1.5cm}{\bf Prescursor \hspace{1cm} Decay Rate} & $\hat{\lambda}_{k}$ & & \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{p}$ & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{prompt-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
+
+  \midrule
+  \multicolumn{5}{c}{\bf Delayed Neutron Specific Constants} \\
+  \midrule
+
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{delayedgroup} \\
+  \cline{3-5}
+  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
   \midrule
 
-  \parbox{1.5cm}{\bf Neutron \hspace{1cm} Fraction} & $\hat{\beta}_{k,g}$ & & \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{d}$ & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout}, \texttt{delayedgroup} \\
+
+  \midrule
+
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Precursor \hspace{1cm} Decay Rate}} & \multirow{2}{*}{$\hat{\lambda}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{delayedgroup} \\
+  \cline{3-5}
+  & & $\Big\langle \frac{1}{\lambda^d} \nu\Sigma_{f}^{d}, \psi \Big\rangle_{k,g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{delayedgroup} \\
+
+
+  \midrule
+
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Neutron \hspace{1cm} Fraction}} & \multirow{2}{*}{$\hat{\beta}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{delayedgroup} \\
+  \cline{3-5}
+  & & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy} \\
 
   \midrule
 
