@@ -3,6 +3,7 @@
 \label{sec:design}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%including the scores, filters and estimators for each tally
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{OpenMC Code}
@@ -37,7 +38,7 @@ The Pandas Python package\cite{mckinney2010pandas} was implemented in the Python
 \subsubsection{Tally Slicing and Merging}
 \label{subsubsec:tally-slice-merge}
 
-Two useful and related features in the OpenMC Python API for MGXS generation are \textit{tally merging} and \textit{tally slicing} as depicted in \autoref{fig:tally-merge-slice}. It is intuitively useful to systematically create individual \texttt{Tally} objects for each spatial zone and reaction type when generating the OpenMC inputs necessary to compute MGXS. However, this necessarily leads to a large number (10$^2$ -- 10$^3$) of distinct tally objects for large, complex geometries, which poses a computational bottleneck since the overhead to tally in OpenMC scales as $\mathcal{O}(N)$ for $N$ tallies. To compensate for this, the Python API's \texttt{Tally} class automatically merges user-specified tallies for input generation. Similarly, the API supports the slicing of tallies to simplify downstream data processing which may comprise energy-, nuclide-, and/or reaction-dependent transformations of the tally data.
+Two useful and related features in the OpenMC Python API for MGXS generation are \textit{tally merging} and \textit{tally slicing} as depicted in \cref{fig:tally-merge-slice}. It is intuitively useful to systematically create individual \texttt{Tally} objects for each spatial zone and reaction type when generating the OpenMC inputs necessary to compute MGXS. However, this necessarily leads to a large number (10$^2$ -- 10$^3$) of distinct tally objects for large, complex geometries, which poses a computational bottleneck since the overhead to tally in OpenMC scales as $\mathcal{O}(N)$ for $N$ tallies. To compensate for this, the Python API's \texttt{Tally} class automatically merges user-specified tallies for input generation. Similarly, the API supports the slicing of tallies to simplify downstream data processing which may comprise energy-, nuclide-, and/or reaction-dependent transformations of the tally data.
 
 \begin{figure}
 \begin{subfigure}{\textwidth}
@@ -75,7 +76,7 @@ A primary objective of tally arithmetic is to rapidly transform tally data with 
 
 \noindent The variables $X$ and $Y$ may correspond to tallies for reaction rates and the flux, while $Z$ could correspond to a MGXS.
 
-The covariance $\sigma_{XY}$ is not generally computable using the standard formulation for a tally estimator in a Monte Carlo simulation. Although it would be possible to estimate the covariance using ensemble statistics, this is not often feasible. Instead, the covariance term in \autoref{eqn:div-prop} is neglected by the current implementation of tally arithmetic. In general, the random variables for reaction rates and fluxes in the same volume of phase space are highly correlated, such that a conservative estimate of the variance for MGXS is obtained by neglecting the covariance.
+The covariance $\sigma_{XY}$ is not generally computable using the standard formulation for a tally estimator in a Monte Carlo simulation. Although it would be possible to estimate the covariance using ensemble statistics, this is not often feasible. Instead, the covariance term in \cref{eqn:div-prop} is neglected by the current implementation of tally arithmetic. In general, the random variables for reaction rates and fluxes in the same volume of phase space are highly correlated, such that a conservative estimate of the variance for MGXS is obtained by neglecting the covariance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Distributed Cell Tallies}
@@ -103,7 +104,7 @@ The \textit{distributed cell tally} algorithm was implemented in OpenMC \cite{la
 
 The OpenMC Python API's \texttt{openmc.mgxs} module was designed to generate multi-group cross sections. The \texttt{openmc.mgxs} module is built atop the underlying core features in the rest of the API to support a seamless interface for both input generation and downstream data processing of MGXS from Python. In particular, one may specify the MGXS to compute and the \texttt{openmc.mgxs} module will construct the necessary \texttt{Tally} objects. The \texttt{Tally} objects may be easily exported to XML input files for OpenMC, and used to containerize and process the tally data produced by an OpenMC simulation. The \texttt{openmc.mgxs} module thereby leverages the software stack (\textit{e.g.}, tally arithmetic, Pandas DataFrames) provided by the Python API.
 
-The \texttt{openmc.mgxs} module uses an object-oriented design based on an abstract \texttt{MGXS} class with subclasses for different reaction types. The \texttt{MGXS} subclasses are itemized in \autoref{tab:mgxs-types} and compute macroscopic or microscopic multi-group constants in one or more arbitrary energy group structures from MC tallies. The \texttt{openmc.mgxs} module also includes a \texttt{Library} class which automates the construction of \texttt{MGXS} objects for different group structures, spatial domains, and reaction types.
+The \texttt{openmc.mgxs} module uses an object-oriented design based on an abstract \texttt{MGXS} class with subclasses for different reaction types. The \texttt{MGXS} subclasses are itemized in \cref{tab:mgxs-types} and compute macroscopic or microscopic multi-group constants in one or more arbitrary energy group structures from MC tallies. The \texttt{openmc.mgxs} module also includes a \texttt{Library} class which automates the construction of \texttt{MGXS} objects for different group structures, spatial domains, and reaction types.
 
 \begin{table}[h!]
   \centering

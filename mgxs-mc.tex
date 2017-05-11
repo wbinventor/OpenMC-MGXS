@@ -3,7 +3,7 @@
 \label{sec:mgxs-mc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-This section describes how multi-group cross sections may be computed using stochastic integration. In particular, this section outlines the types of OpenMC tallies needed to generate MGXS -- including the scores, filters and estimators for each tally -- and the arithmetic combinations used to combine different tallies.
+This section describes how multi-group cross sections may be computed using stochastic integration. In particular, this section outlines the types of tallies needed to generate MGXS and the arithmetic combinations used to combine different tallies.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inner Product Notation}
@@ -54,7 +54,7 @@ A general spatially-homogenized and energy condensed macroscopic multi-group cro
 \subsection{Total Cross Section}
 \label{subsubsec:tally-types-tot-xs}
 
-The total cross section $\hat{\Sigma}_{t}$ is a special case of \autoref{eqn:general-macro}, with the collision rate substituted into the numerator:
+The total cross section $\hat{\Sigma}_{t}$ is a special case of \cref{eqn:general-macro}, with the collision rate substituted into the numerator:
 
 \begin{equation}
 \label{eqn:total-macro}
@@ -82,7 +82,7 @@ A transport correction is often used to incorporate anisotropic scattering effec
 \hat{\Sigma}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-It should be noted that an analog tally estimator must be used to compute the transport correction, since \autoref{eqn:sigs1} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \autoref{eqn:sigt-transport-macro} must also be computed with analog tally estimators.
+It should be noted that an analog tally estimator must be used to compute the transport correction, since \cref{eqn:sigs1} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} must also be computed with analog tally estimators.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Scattering Multiplicity Matrix}
@@ -95,7 +95,7 @@ The rate of scattering multiplicity reactions (\textit{i.e.}, $(n,xn)$ reactions
 \langle \upsilon \Sigma_{s}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_g}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \sum_j \upsilon_j \Sigma_j (\mathbf{r}, E' \rightarrow E, \mathbf{\Omega}) \psi(\mathbf{r}, E', \mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent where $\hat{\upsilon}_{j,k,g}$ is the scattering multiplicity for the $i$\textsuperscript{th} reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ is given by an expression similar to \autoref{eqn:sigs1} and is divided from \autoref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
+\noindent where $\hat{\upsilon}_{j,k,g}$ is the scattering multiplicity for the $i$\textsuperscript{th} reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ is given by an expression similar to \cref{eqn:sigs1} and is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
 
 \begin{equation}
 \label{eqn:scatt-mult-mat}
@@ -142,7 +142,7 @@ The isotropic scattering matrix is computed with an inner product of scattering 
 
 \noindent Analog tally estimators must be used since the scattering moments depend on the neutron's outgoing energy.
 
-A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,k,g'\rightarrow g}$ may be computed for multi-group transport codes with isotropic scattering kernels. In particular, the transport correction in \autoref{eqn:transport-corr-macro} can be applied by subtracting it from the diagonal elements in the matrix to compute the transport-corrected isotropic scattering matrix:
+A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,k,g'\rightarrow g}$ may be computed for multi-group transport codes with isotropic scattering kernels. In particular, the transport correction in \cref{eqn:transport-corr-macro} can be applied by subtracting it from the diagonal elements in the matrix to compute the transport-corrected isotropic scattering matrix:
 
 \begin{equation}
 \label{eqn:scatt-trans-macro}
@@ -151,14 +151,14 @@ A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,
 
 %To incorporate the effect of neutron multiplication from $(n,xn)$ reactions in the above relation, the nu parameter can be set to `True`.
 
-An alternative ``consistent'' form of the scattering matrix can be computed as the product of the scatter cross section and group-to-group scattering probabilities. Unlike the formulation in \autoref{eqn:scatt-macro}, the consistent formulation is computed from the outscattering cross section $\hat{\Sigma}_{s,k,g}$ which may be tallied using track-length estimators. This ensures that reaction rate balance is exactly preserved with a total cross section (\autoref{eqn:total-macro}) computed using a track-length estimator. In particular, the consistent formulation computes the Legendre scattering moments from the scattering probability matrix $\hat{P}_{s\ell,g'\rightarrow g}$ (\autoref{eqn:scatt-prob-mat}) and outscattering cross section $\Sigma_{s,k,g}$ as follows:
+An alternative ``consistent'' form of the scattering matrix can be computed as the product of the scatter cross section and group-to-group scattering probabilities. Unlike the formulation in \cref{eqn:scatt-macro}, the consistent formulation is computed from the outscattering cross section $\hat{\Sigma}_{s,k,g}$ which may be tallied using track-length estimators. This ensures that reaction rate balance is exactly preserved with a total cross section (\cref{eqn:total-macro}) computed using a track-length estimator. In particular, the consistent formulation computes the Legendre scattering moments from the scattering probability matrix $\hat{P}_{s\ell,g'\rightarrow g}$ (\cref{eqn:scatt-prob-mat}) and outscattering cross section $\Sigma_{s,k,g}$ as follows:
 
 \begin{equation}
 \label{eqn:scatt-mat-consistent}
 \hat{\Sigma}_{s\ell,g'\rightarrow g} = \hat{\Sigma}_{s,k,g} \times \hat{P}_{s\ell,k,g'\rightarrow g}
 \end{equation}
 
-\noindent The effects of neutron multipication from $(n,xn)$ reactions can be easily incorporated into the consistent scattering matrix formulation by multiplying by the multiplicity $\hat{\upsilon}_{k,g'\rightarrow g}$ (\autoref{eqn:scatt-mult-mat}):
+\noindent The effects of neutron multipication from $(n,xn)$ reactions can be easily incorporated into the consistent scattering matrix formulation by multiplying by the multiplicity $\hat{\upsilon}_{k,g'\rightarrow g}$ (\cref{eqn:scatt-mult-mat}):
 
 \begin{equation}
 \label{eqn:nuscatt-mat-consistent}
@@ -169,7 +169,7 @@ An alternative ``consistent'' form of the scattering matrix can be computed as t
 \subsection{Fission Production Cross Section}
 \label{subsubsec:tally-types-fiss-prod}
 
-The fission product macroscopic cross section $\nu\hat{\Sigma}_{f,k,g}$ may be treated as a special case of \autoref{eqn:general-macro}, with estimators for the fission production rate and flux:
+The fission product macroscopic cross section $\nu\hat{\Sigma}_{f,k,g}$ may be treated as a special case of \cref{eqn:general-macro}, with estimators for the fission production rate and flux:
 
 \begin{equation}
 \label{eqn:nu-fiss-macro}
@@ -249,7 +249,7 @@ The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed a
 \subsection{Summary}
 \label{subsec:tally-types-summary}
 
-The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \autoref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by \texttt{energy} and/or \texttt{energyout} filters in the table. A spatial homogenization domain is specified by a \texttt{material}, \texttt{cell}, \texttt{universe} or \texttt{mesh} filter.
+The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by \texttt{energy} and/or \texttt{energyout} filters in the table. A spatial homogenization domain is specified by a \texttt{material}, \texttt{cell}, \texttt{universe} or \texttt{mesh} filter.
 
 \begin{table}[h!]
   \centering
