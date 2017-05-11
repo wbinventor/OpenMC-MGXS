@@ -63,6 +63,7 @@ The total cross section $\hat{\Sigma}_{t}$ is a special case of \cref{eqn:genera
 
 A transport correction is often used to incorporate anisotropic scattering effects into the transport equation with an isotropic scattering kernel. An expression for the in-scatter approximation \cite{yamamoto2008simplified} to the transport correction is computed with an OpenMC tally for the first Legendre scattering moment:
 
+\todo[inline]{PR: We should really define $\Sigma_{s\ell}$ here. Otherwise it's not clear what $\Sigma_{s1}$ is. The definition should include $d\mathbf{\Omega'}$ as a variable of integration.}
 \begin{equation}
 \label{eqn:sigs1}
 \langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \Sigma_{s1}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E',\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
@@ -229,7 +230,7 @@ The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another u
 
 \begin{equation}
 \label{eqn:beta}
-\hat{\beta}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d \phi \rangle}{\langle \nu \Sigma_f \phi \rangle}
+\hat{\beta}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d \phi \rangle_{k,g}}{\langle \nu \Sigma_f \phi \rangle_{k,g}}
 \end{equation}
 
 \noindent While the delayed neutron fraction is typically not computed as an energy dependent quantity, the energy group subscript is included for consistency.
@@ -241,8 +242,8 @@ The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another u
 The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed as:
 
 \begin{equation}
-\label{eqn:beta}
-\hat{\lambda}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d \phi \rangle}{\Big\langle \frac{1}{\lambda^{d}} \nu \Sigma_f^d \phi \Big\rangle}
+\label{eqn:lambda}
+\hat{\lambda}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d \phi \rangle_{k,g}}{\Big\langle \frac{1}{\lambda^{d}} \nu \Sigma_f^d \phi \Big\rangle_{k,g}}
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
