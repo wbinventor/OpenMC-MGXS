@@ -48,7 +48,7 @@ A general spatially-homogenized and energy condensed macroscopic multi-group cro
 \hat{\sigma}_{x,i,k,g} = \frac{\langle \sigma_{x,i}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-\noindent These estimators are used for reaction types which are only dependent on the incoming energy of a neutron.
+\noindent These estimators are used for reaction types which are only dependent on the energyin of a neutron.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Total Cross Section}
@@ -69,7 +69,7 @@ A transport correction is often used to incorporate anisotropic scattering effec
 \langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \Sigma_{s1}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E',\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent The spatially-homogenized and energy condensed transport-corrected total cross section is computed by summing over all incoming energy groups:
+\noindent The spatially-homogenized and energy condensed transport-corrected total cross section is computed by summing over all energyin groups:
 
 \begin{equation}
 \label{eqn:transport-corr-macro}
@@ -250,7 +250,7 @@ The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed a
 \subsection{Summary}
 \label{subsec:tally-types-summary}
 
-The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by \texttt{energy} and/or \texttt{energyout} filters in the table. A spatial homogenization domain is specified by a \texttt{material}, \texttt{cell}, \texttt{universe} or \texttt{mesh} filter.
+The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by \texttt{energy} and/or energyout filters in the table. A spatial homogenization domain may be specified for a material, cell, universe or mesh.
 
 \begin{table}[h!]
   \centering
@@ -258,107 +258,103 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
   \scriptsize
   \label{tab:tally-types}
   \vspace{6pt}
-  \begin{tabular}{ m{1.5cm} m{1.2cm} m{2cm} m{2.5cm} l }
+  \begin{tabular}{ m{1.5cm} m{1.2cm} m{2cm} l}
   \toprule
   {\bf Name} &
   {\bf Symbol} &
   {\bf Tally} &
-  {\bf Score} &
-  {\bf Filters} \\
+  {\bf Phase Space Discretization} \\
 
   \midrule
 
-  \multirow{2}{*}{\bf General} & \multirow{2}{*}{$\hat{\Sigma}_{x,k,g}$} & $\langle \Sigma_{x}, \psi \rangle_{k,g}$ & reaction $x$ & spatial domain\footnotemark, \texttt{energy} \\
-  \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & {\texttt{flux}} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \multirow{2}{*}{\bf General} & \multirow{2}{*}{$\hat{\Sigma}_{x,k,g}$} & $\langle \Sigma_{x}, \psi \rangle_{k,g}$ & space, energy \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
 
   \midrule
 
-  \multirow{2}{*}{\bf Total} & \multirow{2}{*}{$\hat{\Sigma}_{t,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & \texttt{total} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-  \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \multirow{2}{*}{\bf Total} & \multirow{2}{*}{$\hat{\Sigma}_{t,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & space, energyin \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
 
   \midrule
 
-  \multirow{3}{*}{\parbox{1.5cm}{\bf Radiative Capture}} & \multirow{3}{*}{$\hat{\Sigma}_{\gamma,k,g}$} & $\langle \Sigma_{a}, \psi \rangle_{k,g}$ & \texttt{absorption} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-  \cline{3-5}
-  & & $\langle \Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{fission} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-  \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \multirow{3}{*}{\parbox{1.5cm}{\bf Radiative Capture}} & \multirow{3}{*}{$\hat{\Sigma}_{\gamma,k,g}$} & $\langle \Sigma_{a}, \psi \rangle_{k,g}$ & space, energyin \\
+  \cline{3-4}
+  & & $\langle \Sigma_{f}, \psi \rangle_{k,g}$ & space, energyin \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
 
   \midrule
 
-  \textbf{\parbox{1.5cm}{\bf Transport Correction}} & $\hat{\Sigma}_{tr,k,g}$ & $\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-0} & spatial domain\ref{foot:domain}, \texttt{energyout} \\
+  \textbf{\parbox{1.5cm}{\bf Transport Correction}} & $\hat{\Sigma}_{tr,k,g}$ & $\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyout \\
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-$\ell$} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
-  \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, energyout \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
 
   \midrule
 
-  \multirow{3}{*}{\parbox{1.5cm}{\bf Scattering Matrix (consistent)}} & \multirow{3}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g}$ & \texttt{scatter} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-  \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-  \cline{3-5}
-  & & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{(nu-)scatter-$\ell$} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
+  \multirow{3}{*}{\parbox{1.5cm}{\bf Scattering Matrix (consistent)}} & \multirow{3}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g}$ & space, energyin \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
+  \cline{3-4}
+  & & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, energyout \\
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}$} & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-  \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-
-  \midrule
-
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}$} & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & space, energy \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
 
   \midrule
 
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & \multirow{2}{*}{$\hat{\upsilon}_{k,g}^{-1}$} & $\langle \upsilon^{-1}, \psi \rangle_{k,g}$ & \texttt{total} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-  \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-
-  \midrule
-  \multicolumn{5}{c}{\bf Prompt Neutron Specific Constants} \\
-  \midrule
-
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{p}$} & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}$ & \texttt{prompt-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-  \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, energyout \\
 
   \midrule
 
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{p}$ & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{prompt-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout} \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & \multirow{2}{*}{$\hat{\upsilon}_{k,g}^{-1}$} & $\langle \upsilon^{-1}, \psi \rangle_{k,g}$ & space, energyin \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
 
   \midrule
-  \multicolumn{5}{c}{\bf Delayed Neutron Specific Constants} \\
+  \multicolumn{4}{c}{\bf Prompt Neutron Specific Constants} \\
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{delayedgroup} \\
-  \cline{3-5}
-  & & $\langle \psi \rangle_{k,g}$ & \texttt{flux} & spatial domain\ref{foot:domain}, \texttt{energy} \\
-
-  \midrule
-
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{d}$ & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{energyout}, \texttt{delayedgroup} \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{p}$} & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}$ & space, energyin \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Precursor \hspace{1cm} Decay Rate}} & \multirow{2}{*}{$\hat{\lambda}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{delayedgroup} \\
-  \cline{3-5}
-  & & $\Big\langle \frac{1}{\lambda^d} \nu\Sigma_{f}^{d}, \psi \Big\rangle_{k,g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{delayedgroup} \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{p}$ & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, outoing energy \\
 
+  \midrule
+  \multicolumn{4}{c}{\bf Delayed Neutron Specific Constants} \\
+  \midrule
+
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energyin, delayed group \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Neutron \hspace{1cm} Fraction}} & \multirow{2}{*}{$\hat{\beta}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & \texttt{delayed-nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy}, \texttt{delayedgroup} \\
-  \cline{3-5}
-  & & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & \texttt{nu-fission} & spatial domain\ref{foot:domain}, \texttt{energy} \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{d}$ & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, energyout, delayed group \\
+
+  \midrule
+
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Precursor \hspace{1cm} Decay Rate}} & \multirow{2}{*}{$\hat{\lambda}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energyin, delayed group \\
+  \cline{3-4}
+  & & $\Big\langle \frac{1}{\lambda^d} \nu\Sigma_{f}^{d}, \psi \Big\rangle_{k,g}$ & space, energyin, delayed group \\
+
+  \midrule
+
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Neutron \hspace{1cm} Fraction}} & \multirow{2}{*}{$\hat{\beta}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energyin, delayed group \\
+  \cline{3-4}
+  & & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & space, energyin \\
 
   \midrule
 
 \end{tabular}
 \end{table}
-
-\footnotetext{\label{foot:domain} A \texttt{material}, \texttt{cell}, \texttt{distribcell}, \texttt{universe} or \texttt{mesh} filter.}
