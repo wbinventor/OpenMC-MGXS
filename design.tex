@@ -64,21 +64,17 @@ object reads in the tally results and can then be used by the
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Data Processing}
+\subsection{Data Processing and Storage}
 \label{subsec:data-processing}
 
+As one can see from the examples in \cref{subsec:workflow}, generating MGXS is straightforward and easy for a user. Under the hood, the calculation of the MGXS takes advantage of many of the existing features of the Python API discussed in \cref{sec:openmc}. When a user loads tally results from a statepoint and displays them or stores them to disk, the following sequence of events happens:
 \begin{itemize}[noitemsep]
-\item refer to PyAPI features that are ``inherited'' by \texttt{openmc.mgxs}:
-  \begin{itemize}[noitemsep]
-  \item Pandas DataFrames, tally arithmetic/slicing/merging, ...
-  \end{itemize}
+\item Reaction rate and flux \texttt{Tally} objects are obtained using tally slicing. This is necessary because during input generation, the tallies for multiple MGXS objects may have been merged into fewer tallies. Slicing allows us to get back a \texttt{Tally} object that appears to only have the desired filters, nuclides, and scores.
+\item A derived cross section \texttt{Tally} object is produced by using tally arithmetic to divide the reaction rate tally by the flux tally. It is also at this stage that we take advantage of the fact that the tally results are stored in dense NumPy arrays, thereby minimizing the time to perform arithmetic operations.
+\item If a user requests a Pandas DataFrame for a \texttt{MGXS} object, it is produced by first generating a Pandas Dataframe for the derived cross section tally and making slight modifications (e.g., labeling energy groups).
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Data Storage}
-\label{subsec:data-storage}
-
-The \texttt{openmc.mgxs} module was developed with general design principles to generate MGXS for any multi-group neutron transport code. Although the module does not explicitly support any multi-group codes, it can export MGXS data to a variety of data storage formats, including Comma-Separated Values (CSV) and HDF5. The exported MGXS files may be easily transformed into the database or input files required by a particular multi-group code.
+The \texttt{openmc.mgxs} module was developed with general design principles to generate MGXS for any multi-group neutron transport code. Although the module does not explicitly support any multi-group codes, it can export MGXS data to a variety of data storage formats, including Comma-Separated Values (CSV) and HDF5. The exported MGXS files may be easily transformed into the database or input files required by a particular multi-group code. Additionally, a cross section library can be exported to the format used by OpenMC's multi-group transport mode.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Features}
@@ -106,8 +102,9 @@ The \texttt{openmc.mgxs} module is designed to perform spatial homogenization on
 \subsubsection{Microscopic MGXS}
 \label{subsec:micro-macro}
 
-I hear it is unique that we can calculate micros?
+When tally results are loaded into an \texttt{MGXS} object, the reaction rate tallies contain macroscopic quantities. Thus, by default, when a derived cross section tally is computed by dividing reaction rates by fluxes, a macroscopic cross section is obtained. However, all methods that output MGXS (\texttt{print_xs()}, \texttt{get_pandas_dataframe()}, \texttt{export_xs_data()}, etc.), also have an argument that allows the user to specify that microscopic cross sections should be calculated. This option works both for total material cross sections as well as per-nuclide cross sections.
 
+For spatial domains that are of homogeneous material composition, calculating microscopic cross sections is performed by dividing by the known number densities in the material present. Furthermore, microscopic cross sections can be calculated for spatial domains with heterogeneous material composition, for example, a universe consisting of multiple cells each with a different material, by using a stochastic volume calculation mode built-in to OpenMC. The stochastic volume calculation defines a bounding box for a spatial domain of interest, samples points uniformly within the bounding box, and counts how many points lie within the spatial domain, thereby obtaining as estimate of the volume fraction of the domian within the bounding box. Such a capability can be useful when microscopic MGXS are desired over an entire assembly or other spatial domain of similar complexity.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Isotropic in Lab Scattering}
@@ -142,25 +139,25 @@ A unique option for isotropic in lab scattering is implemented in the OpenMC cod
   \midrule
   \texttt{AbsorptionXS} & \cmark & \cmark & \cmark \\
   \texttt{CaptureXS} & \cmark & \cmark & \cmark \\
-  \texttt{Chi} & \cmark & \xmark & \xmark \\
+  \texttt{Chi} & \cmark & & \\
   \texttt{FissionXS} & \cmark & \cmark & \cmark \\
   \texttt{InverseVelocity} & \cmark & \cmark & \cmark \\
   \texttt{KappaFissionXS} & \cmark & \cmark & \cmark \\
-  \texttt{MultiplicityMatrixXS} & \cmark & \xmark & \xmark \\
-  \texttt{NuFissionMatrixXS} & \cmark & \xmark & \xmark \\
+  \texttt{MultiplicityMatrixXS} & \cmark & & \\
+  \texttt{NuFissionMatrixXS} & \cmark & & \\
   \texttt{ScatterXS} & \cmark & \cmark & \cmark \\
-  \texttt{ScatterMatrixXS} & \cmark & \xmark & \xmark \\
-  \texttt{ScatterProbabilityMatrixXS} & \cmark & \xmark & \xmark \\
+  \texttt{ScatterMatrixXS} & \cmark & & \\
+  \texttt{ScatterProbabilityMatrixXS} & \cmark & & \\
   \texttt{TotalXS} & \cmark & \cmark & \cmark \\
-  \texttt{TransportXS} & \cmark & \xmark & \xmark \\
+  \texttt{TransportXS} & \cmark & & \\
   \midrule
   \multicolumn{4}{c}{\bf Delayed Neutron Constants} \\
   \midrule
   \texttt{Beta} & \cmark & \cmark & \cmark \\
-  \texttt{ChiDelayed} & \cmark & \xmark & \xmark \\
+  \texttt{ChiDelayed} & \cmark & & \\
   \texttt{DecayRate} & \cmark & \cmark & \cmark \\
   \texttt{DelayedNuFissionXS} & \cmark & \cmark & \cmark \\
-  \texttt{DelayedNuFissionMatrixXS} & \cmark & \xmark & \xmark \\
+  \texttt{DelayedNuFissionMatrixXS} & \cmark & & \\
   \bottomrule
 \end{tabular}
 \end{table}
