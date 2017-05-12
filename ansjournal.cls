@@ -20,7 +20,7 @@
 \RequirePackage[runin]{abstract}                        % texlive-latex-extra
 \RequirePackage{amsmath}                                % texlive-latex-base
 \RequirePackage{xcolor}                                 % texlive-latex-recommended
-\definecolor{ANSBlue}{RGB}{28,78,157}
+\definecolor{ANSBlue}{RGB}{0,0,128}
 \RequirePackage{hyperref}                               % texlive-latex-base
 \hypersetup{
   colorlinks=true,
@@ -132,7 +132,7 @@
 %\titlespacing{\subsubsection}{0pt}{1.0ex plus 1ex minus .2ex}{.2ex plus .2ex}
 
 
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand{\thefootnote}{\alph{footnote}}
 \renewcommand{\footnotesize}{\fontsize{9}{10.8pt}\selectfont}
 \renewcommand{\small}{\fontsize{10}{12pt}\selectfont}
 \renewcommand{\large}{\fontsize{14}{16.8pt}\selectfont}
@@ -185,3 +185,10 @@
 \setlength{\abstitleskip}{-\parindent}
 
 %\AtBeginDocument{\justify}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand\refname{R\lowercase{eferences}}
+\renewcommand\@biblabel[1]{#1.}
