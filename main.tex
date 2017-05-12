@@ -47,6 +47,8 @@
   xrightmargin=0.8in
 }
 
+\crefname{lstlisting}{listing}{listings}
+
 % Patch to make equation autoref counter work
 \makeatletter
 \patchcmd\eq@setnumber{\stepcounter}{\refstepcounter}{}{%
@@ -87,6 +89,7 @@
 
 \input{introduction}
 \input{mgxs-mc}
+\input{openmc}
 \input{design}
 \input{results}
 \input{conclusions}

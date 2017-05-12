@@ -1,43 +1,53 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Design and Implementation}
-\label{sec:design}
+\section{OpenMC Core Features}
+\label{sec:openmc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+We have outlined in \cref{sec:mgxs-mc} procedures for estimating multi-group cross sections based on flux and reaction rate tallies from a Monte Carlo code. It is conceptually simple to have a Monte Carlo code compute these tallies and directly report a macroscopic or microscopic multi-group cross section as part of the output of the code. Indeed, this is the approach adopted by the Serpent Monte Carlo code\cite{leppanen2016homog}. The approach taken in OpenMC is fundamentally different---instead of having the solver directly calculate and report MGXS, the standard output of the code only includes flux and reaction rate values directly. After a simulation is complete, the reported tallies are read by a set of Python classes and the calculation of MGXS is performed as a post-processing task from within a Python Application Programming Interface (API). Before we outline the MGXS implementation within the Python API, we first discuss the OpenMC code and its Python API.
+
+OpenMC is an open source Monte Carlo particle transport code which is primarily intended for use in neutron criticality calculations. It is capable of simulating three-dimensional models using constructive solid geometry. It also supports both continuous-energy and multi-group cross section data in a native HDF5\cite{koranne2011hdf5} data format\cite{romano2017epjwoc} that can be generated from ACE files.
 
 %%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{OpenMC Code}
-\label{subsec:openmc-overview}
+\subsection{Tallies}
+\label{subsec:tallies}
 
+OpenMC features a flexible, low-overhead tally system that enables users to obtain physical results of interest. Tallies are defined by combinations of \emph{filters} and \emph{scores}. Each filter limits what events can score to the tally based on the phase space variables. For example, a filter could limit scoring events to particles traveling within in a specified cell or a specified range of pre-collision energies. Each score identifies a physical quantity to be scored when an event occurs that matches the specified filters. Looking at \cref{eqn:inner-prod}, filters correspond to the limits of integration and scores correspond to the integrand itself:
+\begin{equation}
+\langle \Sigma_x, \psi \rangle = \underbrace{\int_{V} \int_{S} \int_{E}}_{\text{filters}} \underbrace{\Sigma_{x}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega})}_{\text{scores}} \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\end{equation}
+In addition to filters and scores, it is also possible to obtain reaction rates by individual nuclides by specifying a list of nuclides. Each tally definition is permitted to have multiple filters, multiple scores, and multiple nuclides. Additionally, the estimator used to score events can also be specified on a per-tally basis.
+
+A wide range of filters and scores have been implemented as of the version 0.9.0 release of OpenMC\cite{openmc-090}. The available filters can generally be categorized as follows:
+\begin{itemize}[noitemsep]
+\item \emph{Spatial domain}: Tally events by universe, material, cell, mesh
+\item \emph{Energy domain}: Tally events based on both incoming and outgoing particle energy
+\item \emph{Angle domain}: Tally events based on a particle's polar and azimuthal direction or scattering angle
+\item \emph{Energy function}: Multiplies tally scores by an arbitrary function of incident energy
+\item \emph{Delayed group}: Tally events which produced neutrons in particular delayed groups
+\end{itemize}
+The available scores in version 0.9.0 include: particle flux, all invidual reaction rates, neutron production from fission (total, prompt, or delayed), Legendre and spherical harmonic scattering moments, spherical harmonic flux moments, inverse velocity, recoverable fission energy release, and the delayed neutron production-weighted decay rate. Taken together, these filters and scores permit all inner products identified in \cref{tab:tally-types} to be estimated via tallies in OpenMC.
 
 %%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Python API}
 \label{subsec:pyapi}
 
-A fully-featured Python Application Programming Interface (API) was designed and implemented to enable programmatic pre- and post-processing for OpenMC\cite{boyd2016bigdata}. The API enables tight coupling of input generation, simulation execution, and tally data analysis within dynamic Python script ``input files.'' In addition, the API makes it possible to leverage the extensive ecosystem of Python packages for scientific computing alongside OpenMC in a simulation workflow. The following sections describe the API and some of the core features which comprise the software stack developed to support the MGXS generation module created for OpenMC.
+In addition to the main transport solver, a fully-featured Python API enables programmatic pre- and post-processing for OpenMC\cite{boyd2016bigdata}. The API enables tight coupling of input generation, simulation execution, and tally data analysis within dynamic Python scripts that form their own ``input files.'' In addition, the API makes it possible to leverage the extensive ecosystem of Python packages for scientific computing alongside OpenMC in a simulation workflow. The following sections describe the API and some of the core features which comprise the software stack developed to support the MGXS generation module created for OpenMC.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Workflow Organization}
-\label{subsubsec:pyapi-workflow}
+The Python API is a user-friendly, complementary (and optional) addition to the OpenMC codebase. OpenMC is written in Fortran 2008 and uses eXtensible Markup Language (XML) input files to describe the simulation materials, geometry, tallies, and settings. Although XML is often hailed as both human-readable and machine-readable, it can be cumbersome to write by hand for large and complicated reactor models. The Python API leverages Python's standard library to automatically generate XML input files used by the OpenMC executable. Instead of writing XML files by hand, Python scripts are used to describe one or more OpenMC simulations, including those used to generate MGXS with OpenMC.
 
-The Python API is a user-friendly, complementary (and optional) addition to the OpenMC codebase. OpenMC is written in Fortran 2008 and uses eXtensible Markup Language (XML) input files to describe the simulation materials, geometry, tallies, and settings. Although XML is often hailed as both human-readable and machine-readable, it is cumbersome to write by hand for large and complicated reactor models. The Python API circumvents this process by leveraging Python's internal \texttt{ElementTree} API to generate the XML files used by the OpenMC executable. Instead of writing XML files by hand, dynamic Python scripts are used to describe one or more OpenMC simulations, including those used to generate MGXS with OpenMC.
+The OpenMC Python API adheres to object-oriented software design principles with extensible class definitions. A user instantiates, manipulates, and connects objects representing items such as the materials, geometry, and tallies to construct an OpenMC simulation. This is a scalable alternative workflow to traditional ``decks'' of ``cards'' in which data characterizing a simulation is specified in opaque ASCII files (e.g., integer identifiers for geometric primitives such as surfaces, cells, and universes). The Python API provides classes and functions to expose all features provided by OpenMC's XML input specifications.
 
-The OpenMC Python API adheres to object-oriented software design principles with extensible class definitions. A user instantiates, manipulates, and connects objects representing items such as the materials, geometry and tallies to construct an OpenMC simulation. This is a scalable alternative workflow to traditional ``decks'' of ``cards'' in which data characterizing a simulation is specified in opaque ASCII files (\textit{e.g.}, integer identifiers for geometric primitives such as surfaces, cells, universes, etc.). The Python API provides classes and routines to represent all features provided by OpenMC's XML input specifications.
+In addition to its functionality for input generation, the Python API also includes a rich framework for tally data processing. The API eliminates the time-intensive and error-prone process of writing code to parse results from output files. The API is able to reconstruct the hierarchy of interconnected Python objects used to represent the materials, geometry and tallies from OpenMC's HDF5 output files. OpenMC's dynamic object-oriented data processing model---fusing the geometry and materials configuration with tallied data---enables the rapid calculation, indexing, and storage of MGXS from tallies over specified spatial domains.
 
-In addition to its functionality for input generation, the Python API also includes a rich framework of tally data processing utilities. The API eliminates the time intensive and error prone process of writing code to parse results from OpenMC's output files. The API is able to reconstruct the hierarchy of interconnected Python objects used to represent the materials, geometry and tallies from OpenMC's ``statepoint'' and ``summary'' HDF5 output files\cite{koranne2011hdf5}. OpenMC's dynamic object-oriented data processing model -- fusing the geometry and materials configuration with tallied data -- enables the rapid calculation, indexing and storage of MGXS from tallies on unstructured meshes.
+The Python API encapsulates numerical tally data using $N$-dimensional array objects from the NumPy third-party package\cite{walt2011numpy}. Although OpenMC's NumPy interface to tally data is more flexible than simply reporting the data in ASCII files, NumPy arrays are relatively opaque containers for managing large tally datasets. A single OpenMC \texttt{Tally} object used for MGXS generation may encompass many different energy groups, nuclides and reaction types, yet all of this data is tabulated in a single contiguous NumPy array. As a result, it is challenging to implement general algorithms to inspect, index, and manipulate tally data in NumPy arrays for specific groups, nuclides or reactions.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Pandas DataFrames}
-\label{subsubsec:chap4-pandas-df}
-
-The Python API encapsulates numerical tally data using $N$-dimensional array objects from the NumPy package\cite{walt2011numpy}. Although OpenMC's NumPy interface to tally data is more flexible than simply reporting the data in ASCII files, NumPy arrays are relatively opaque containers for managing large tally datasets. A single OpenMC \texttt{Tally} object used for MGXS generation may encompass many different energy groups, nuclides and reaction types, yet all of this data is tabulated in a single contiguous NumPy array. As a result, it is challenging to implement general algorithms to inspect, index, and manipulate tally data in NumPy arrays for specific groups, nuclides or reactions.
-
-The Pandas Python package\cite{mckinney2010pandas} was implemented in the Python API to enable transparent tally data processing for MGXS generation. In particular, the \texttt{Tally} class includes a feature to construct a Pandas \texttt{DataFrame} object from tally data. Pandas DataFrames are modeled after data structures in the \textsf{R} programming language used to store data tables in a more accessible format than contiguous arrays. Pandas DataFrames support mixed-type data (\textit{i.e.}, strings and numbers), and allow the use of string keys or labels to index each column or row. The Python API builds Pandas DataFrames by annotating tally data with the filters, nuclides, and scores associated with each tally bin.
+The Pandas third-party package\cite{mckinney2010pandas} was utilized in the Python API to enable transparent tally data processing for MGXS generation. In particular, the \texttt{Tally} class includes a feature to construct a Pandas \texttt{DataFrame} object from tally data. Pandas DataFrames are modeled after data structures in the \textsf{R} programming language used to store data tables in a more accessible format than contiguous arrays. They support mixed-type data (e.g., strings and numbers) and allow the use of string keys or labels to index each column or row. The Python API builds Pandas DataFrames by annotating tally data with the filters, nuclides, and scores associated with each tally bin.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Tally Slicing and Merging}
-\label{subsubsec:tally-slice-merge}
+\subsection{Tally Slicing and Merging}
+\label{subsec:tally-slice-merge}
 
-Two useful and related features in the OpenMC Python API for MGXS generation are \textit{tally merging} and \textit{tally slicing} as depicted in \autoref{fig:tally-merge-slice}. It is intuitively useful to systematically create individual \texttt{Tally} objects for each spatial zone and reaction type when generating the OpenMC inputs necessary to compute MGXS. However, this necessarily leads to a large number (10$^2$ -- 10$^3$) of distinct tally objects for large, complex geometries, which poses a computational bottleneck since the overhead to tally in OpenMC scales as $\mathcal{O}(N)$ for $N$ tallies. To compensate for this, the Python API's \texttt{Tally} class automatically merges user-specified tallies for input generation. Similarly, the API supports the slicing of tallies to simplify downstream data processing which may comprise energy-, nuclide-, and/or reaction-dependent transformations of the tally data.
+Two useful and related features in the OpenMC Python API for MGXS generation are \emph{tally merging} and \emph{tally slicing} as depicted in \cref{fig:tally-merge-slice}. It is intuitively useful to systematically create individual \texttt{Tally} objects for each spatial domain and reaction type when generating the OpenMC inputs necessary to compute MGXS. However, this necessarily leads to a large number (10$^2$ -- 10$^3$) of distinct tally objects for large, complex geometries, which poses a computational bottleneck since the overhead to tally in OpenMC scales as $\mathcal{O}(N)$ for $N$ tallies\footnote{Note that $N$ refers to the number of tally definitions, each of which can contain multiple filters, nuclides, and scores.}. To compensate for this, the Python API's \texttt{Tally} class automatically merges user-specified tallies for input generation. Similarly, the API supports the slicing of tallies to simplify downstream data processing which may comprise energy-, nuclide-, and/or reaction-dependent transformations of the tally data.
 
 \begin{figure}
 \begin{subfigure}{\textwidth}
@@ -55,12 +65,12 @@ Two useful and related features in the OpenMC Python API for MGXS generation are
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Tally Arithmetic}
-\label{subsubsec:tally-arithmetic}
+\subsection{Tally Arithmetic}
+\label{subsec:tally-arithmetic}
 
-A variety of reaction rate and flux tallies must be arithmetically combined in order to compute MGXS with Monte Carlo. At the most general level, a reaction rate tally must be divided by a flux tally for each energy group, nuclide and tally volume. The Python API provides a novel feature known as \textit{tally arithmetic} to enable arithmetic combinations of tallies with efficient vectorized numerical operations across energy groups, nuclides and spatial tally zones.
+A variety of reaction rate and flux tallies must be arithmetically combined in order to compute MGXS with Monte Carlo. At the most general level, a reaction rate tally must be divided by a flux tally for each energy group, nuclide and tally volume. The Python API provides a novel feature known as \emph{tally arithmetic} to enable arithmetic combinations of tallies with efficient vectorized numerical operations across energy groups, nuclides and spatial tally zones.
 
-Tally arithmetic is an object-oriented data processing feature which arithmetically combines two or more tallies and/or scalar values into new \textit{derived tallies}. The tally arithmetic implementation in OpenMC overloads the operators for addition, subtraction, multiplication, division, and exponentiation in the Python API's \texttt{Tally} class. In addition, the \texttt{Tally} class supports summation or averaging operations across some or all of its filter, nuclide or score bins. The derived tallies produced from tally arithmetic provide the same rich functionality available for the \texttt{Tally} operands used in the arithmetic operation (\textit{e.g.}, Pandas DataFrames, tally arithmetic).
+Tally arithmetic is an object-oriented data processing feature which arithmetically combines two or more tallies and/or scalar values into new \emph{derived tallies}. The tally arithmetic implementation in OpenMC overloads the operators for addition, subtraction, multiplication, division, and exponentiation in the Python API's \texttt{Tally} class. In addition, the \texttt{Tally} class supports summation or averaging operations across some or all of its filter, nuclide or score bins. The derived tallies produced from tally arithmetic provide the same rich functionality available for the \texttt{Tally} operands used in the arithmetic operation (e.g., Pandas DataFrames, tally arithmetic).
 
 Multi-group cross sections may be simply and efficiently computed with tally arithmetic. For example, the following code snippet illustrates how tally slicing and arithmetic are used to compute a total MGXS. The total MGXS that is returned from the tally division operation is encapsulated within a \texttt{Tally} class. This is the approach used by the MGXS generation module created for OpenMC.
 
@@ -73,9 +83,9 @@ A primary objective of tally arithmetic is to rapidly transform tally data with 
 \sigma_{Z}^{2} \approx Z^{2}\left[\left(\frac{\sigma_{X}}{X}\right)^{2} + \left(\frac{\sigma_{Y}}{Y}\right)^{2} - 2\frac{\sigma_{XY}}{Z}\right]
 \end{equation}
 
-\noindent The variables $X$ and $Y$ may correspond to tallies for reaction rates and the flux, while $Z$ could correspond to a MGXS.
+\noindent The variables $X$ and $Y$ may correspond to tallies for reaction rates and the flux, respectively, while $Z$ could correspond to a MGXS.
 
-The covariance $\sigma_{XY}$ is not generally computable using the standard formulation for a tally estimator in a Monte Carlo simulation. Although it would be possible to estimate the covariance using ensemble statistics, this is not often feasible. Instead, the covariance term in \autoref{eqn:div-prop} is neglected by the current implementation of tally arithmetic. In general, the random variables for reaction rates and fluxes in the same volume of phase space are highly correlated, such that a conservative estimate of the variance for MGXS is obtained by neglecting the covariance.
+The covariance $\sigma_{XY}$ is not generally computable using the standard formulation for a tally estimator in a Monte Carlo simulation. Although it would be possible to estimate the covariance using ensemble statistics, this is not often feasible. Instead, the covariance term in \cref{eqn:div-prop} is neglected by the current implementation of tally arithmetic. In general, the random variables for reaction rates and fluxes in the same volume of phase space are highly correlated, such that a conservative estimate of the variance for MGXS is obtained by neglecting the covariance.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Distributed Cell Tallies}
@@ -83,15 +93,4 @@ The covariance $\sigma_{XY}$ is not generally computable using the standard form
 
 %Many Monte Carlo codes, including OpenMC, use some variant of combinatorial geometry (CG) because it can represent arbitrary, repeating geometries such as fuel pins and assemblies. However, the CG approach is challenged by applications which require tallies in each instance of a repeated cell throughout a reactor geometry. The ``brute force'' solution is to instantiate a unique cell for each distinct tally zone. However, this defeats the purpose of using CG for its compact representation, and it is not scalable to problems with large tally datasets such as those considered in this thesis.
 
-The \textit{distributed cell tally} algorithm was implemented in OpenMC \cite{lax2014distribcell} to permit simply defined spatial tally zones across repeated cell instances. The distributed cell algorithm -- abbreviated as the \textit{distribcell} algorithm -- classifies each unique cell instance using a process which consumes orders of magnitude less memory than would be required by the ``brute force'' approach. Only a single transparent line of XML input is necessary to define a distribcell tally which may span across an arbitrary number of instances for a particular cell. Furthermore, the Python API may be used to perform efficient vectorized transformations of distribcell tally data stored as contiguous NumPy arrays. In particular, the distribcell tally algorithm may be used to compute spatially-varying MGXS across fuel pin cell instances.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Multi-Group Mode}
-\label{subsec:openmc-mg-mode}
-
-\begin{itemize}[noitemsep]
-\item support stochastic multi-group calculations
-\item multiple scattering representations (Legendre moments, discrete bins)
-\item use OpenMC to generate MGXS, then insert into identical model for MG calculation
-\item mention angular-dependent MGXS, or save for later paper?
-\end{itemize}
+The \emph{distributed cell tally} algorithm was implemented in OpenMC \cite{lax2014distribcell} to permit simply defined spatial tally zones across repeated cell instances. The distributed cell algorithm -- abbreviated as the \emph{distribcell} algorithm -- classifies each unique cell instance using a process which consumes orders of magnitude less memory than would be required by the ``brute force'' approach. Only a single transparent line of XML input is necessary to define a distribcell tally which may span across an arbitrary number of instances for a particular cell. Furthermore, the Python API may be used to perform efficient vectorized transformations of distribcell tally data stored as contiguous NumPy arrays. In particular, the distribcell tally algorithm may be used to compute spatially-varying MGXS across fuel pin cell instances.
