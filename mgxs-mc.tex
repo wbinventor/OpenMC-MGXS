@@ -16,14 +16,14 @@ The following sections use angle bracket notation $\langle \cdot , \cdot \rangle
 \langle \Sigma_x, \psi \rangle = \int_{V} \int_{S} \int_{E} \Sigma_{x}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent This notation is specialized throughout this section with subscripts to indicate the subsets of phase space that are integrated over in the inner product. In particular, subscript $k$ refers to a volume integral over $V_{k}$ for some region of space $k$ for spatial homogenization, while subscript $g$ corresponds to an integral over energies with $E \in [E_{g}, E_{g-1}]$ for energy condensation. For example, the microscopic reaction rate for reaction $x$ by nuclide $i$ is denoted as:
+\noindent where $\Sigma_x$ is the macroscopic cross section, $\psi$ is the angular neutron flux, and $V$, $S$ and $E$ are the integration bounds in space $\mathbf{r}$, solid angle $\mathbf{\Omega}$ and energy $E$, respectively. The notation is specialized throughout this section with subscripts to indicate the subsets of phase space that are integrated over in the inner product. In particular, subscript $k$ refers to a volume integral over $V_{k}$ for some region of space $k$ for spatial homogenization, while subscript $g$ corresponds to an integral over energies with $E \in [E_{g}, E_{g-1}]$ for energy condensation. For example, the microscopic reaction rate for reaction $x$ by nuclide $i$ is denoted as:
 
 \begin{equation}
 \label{eqn:angle-rxn-rate}
 \langle \sigma_{x,i}, \psi \rangle_{k,g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \sigma_{x,i}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent The inner product of a function with unity, such as the spatially-homogenized and energy-integrated flux is denoted by:
+\noindent The inner product of a function with unity, such as the spatially-homogenized and energy-integrated scalar flux, is denoted by:
 
 \begin{equation}
 \label{eqn:angle-flux}
@@ -41,14 +41,7 @@ A general spatially-homogenized and energy condensed macroscopic multi-group cro
 \hat{\Sigma}_{x,k,g} = \frac{\langle \Sigma_{x}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-\noindent Likewise, a microscopic MGXS for nuclide $i$ can be computed as follows:
-
-\begin{equation}
-\label{eqn:general-micro}
-\hat{\sigma}_{x,i,k,g} = \frac{\langle \sigma_{x,i}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
-\end{equation}
-
-\noindent These estimators are used for reaction types which are only dependent on the energyin of a neutron.
+\noindent The microscopic MGXS for nuclide $i$ can be easily computed by dividing by the nuclide's number density. The estimator given in \autoref{eqn:general-macro} is used for all reaction types which are only dependent on the incident energy of a neutron.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Total Cross Section}
@@ -69,7 +62,7 @@ A transport correction is often used to incorporate anisotropic scattering effec
 \langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \Sigma_{s1}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E',\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent The spatially-homogenized and energy condensed transport-corrected total cross section is computed by summing over all energyin groups:
+\noindent The spatially-homogenized and energy condensed transport-corrected total cross section is computed by summing over all incident energy groups:
 
 \begin{equation}
 \label{eqn:transport-corr-macro}
@@ -233,7 +226,7 @@ The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another u
 \hat{\beta}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d \phi \rangle_{k,g}}{\langle \nu \Sigma_f \phi \rangle_{k,g}}
 \end{equation}
 
-\noindent While the delayed neutron fraction is typically not computed as an energy dependent quantity, the energy group subscript is included for consistency.
+\noindent While the delayed neutron fraction is typically not computed as an energy-dependent quantity, the energy group subscript is included for consistency.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Delayed Neutron Precursor Decay Rate}
@@ -250,7 +243,7 @@ The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed a
 \subsection{Summary}
 \label{subsec:tally-types-summary}
 
-The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by \texttt{energy} and/or energyout filters in the table. A spatial homogenization domain may be specified for a material, cell, universe or mesh.
+The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by ``energy'' (incoming energy) and/or ``energyout'' (outgoing energy) filters in the table. A spatial homogenization domain may be specified for a material, cell, universe or structured mesh.
 
 \begin{table}[h!]
   \centering
@@ -269,21 +262,21 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \multirow{2}{*}{\bf General} & \multirow{2}{*}{$\hat{\Sigma}_{x,k,g}$} & $\langle \Sigma_{x}, \psi \rangle_{k,g}$ & space, energy \\
   \cline{3-4}
-  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
 
   \midrule
 
-  \multirow{2}{*}{\bf Total} & \multirow{2}{*}{$\hat{\Sigma}_{t,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & space, energyin \\
+  \multirow{2}{*}{\bf Total} & \multirow{2}{*}{$\hat{\Sigma}_{t,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & space, energy \\
   \cline{3-4}
-  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
 
   \midrule
 
-  \multirow{3}{*}{\parbox{1.5cm}{\bf Radiative Capture}} & \multirow{3}{*}{$\hat{\Sigma}_{\gamma,k,g}$} & $\langle \Sigma_{a}, \psi \rangle_{k,g}$ & space, energyin \\
+  \multirow{3}{*}{\parbox{1.5cm}{\bf Radiative Capture}} & \multirow{3}{*}{$\hat{\Sigma}_{\gamma,k,g}$} & $\langle \Sigma_{a}, \psi \rangle_{k,g}$ & space, energy \\
   \cline{3-4}
-  & & $\langle \Sigma_{f}, \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \Sigma_{f}, \psi \rangle_{k,g}$ & space, energy \\
   \cline{3-4}
-  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
 
   \midrule
 
@@ -291,17 +284,17 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, energyout \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Scattering Matrix}} & \multirow{2}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & space, energy, energyout \\
   \cline{3-4}
-  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
 
   \midrule
 
-  \multirow{3}{*}{\parbox{1.5cm}{\bf Scattering Matrix (consistent)}} & \multirow{3}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g}$ & space, energyin \\
+  \multirow{3}{*}{\parbox{1.5cm}{\bf Scattering Matrix (consistent)}} & \multirow{3}{*}{$\hat{\Sigma}_{s\ell,k,g'\rightarrow g}$} & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g}$ & space, energy \\
   \cline{3-4}
-  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
   \cline{3-4}
-  & & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, energyout \\
+  & & $\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}$ & space, energy, energyout \\
   \midrule
 
   \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}$} & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & space, energy \\
@@ -310,49 +303,49 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \midrule
 
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, energyout \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}$ & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}$ & space, energy, energyout \\
 
   \midrule
 
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & \multirow{2}{*}{$\hat{\upsilon}_{k,g}^{-1}$} & $\langle \upsilon^{-1}, \psi \rangle_{k,g}$ & space, energyin \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Inverse Velocity}} & \multirow{2}{*}{$\hat{\upsilon}_{k,g}^{-1}$} & $\langle \upsilon^{-1}, \psi \rangle_{k,g}$ & space, energy \\
   \cline{3-4}
-  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
 
   \midrule
   \multicolumn{4}{c}{\bf Prompt Neutron Specific Constants} \\
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{p}$} & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}$ & space, energyin \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{p}$} & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}$ & space, energy \\
   \cline{3-4}
-  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
 
   \midrule
 
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{p}$ & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, outoing energy \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{p}$ & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}$ & space, energy, outoing energy \\
 
   \midrule
   \multicolumn{4}{c}{\bf Delayed Neutron Specific Constants} \\
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energyin, delayed group \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energy, delayed group \\
   \cline{3-4}
-  & & $\langle \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
 
   \midrule
 
-  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{d}$ & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyin, energyout, delayed group \\
+  \parbox{1.5cm}{\parbox{1.2cm}{\bf Fission Spectrum}} & $\hat{\chi}_{k,g}^{d}$ & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}$ & space, energy, energyout, delayed group \\
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Precursor \hspace{1cm} Decay Rate}} & \multirow{2}{*}{$\hat{\lambda}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energyin, delayed group \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Precursor \hspace{1cm} Decay Rate}} & \multirow{2}{*}{$\hat{\lambda}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energy, delayed group \\
   \cline{3-4}
-  & & $\Big\langle \frac{1}{\lambda^d} \nu\Sigma_{f}^{d}, \psi \Big\rangle_{k,g}$ & space, energyin, delayed group \\
+  & & $\Big\langle \frac{1}{\lambda^d} \nu\Sigma_{f}^{d}, \psi \Big\rangle_{k,g}$ & space, energy, delayed group \\
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Neutron \hspace{1cm} Fraction}} & \multirow{2}{*}{$\hat{\beta}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energyin, delayed group \\
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Neutron \hspace{1cm} Fraction}} & \multirow{2}{*}{$\hat{\beta}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energy, delayed group \\
   \cline{3-4}
-  & & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & space, energyin \\
+  & & $\langle \nu\Sigma_{f}, \psi \rangle_{k,g}$ & space, energy \\
 
   \midrule
 
