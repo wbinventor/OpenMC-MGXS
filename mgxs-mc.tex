@@ -41,7 +41,7 @@ A general spatially-homogenized and energy condensed macroscopic multi-group cro
 \hat{\Sigma}_{x,k,g} = \frac{\langle \Sigma_{x}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-\noindent The microscopic MGXS for nuclide $i$ can be easily computed by dividing by the nuclide's number density. The estimator given in \autoref{eqn:general-macro} is used for all reaction types which are only dependent on the incident energy of a neutron.
+\noindent The microscopic MGXS for nuclide $i$ can be easily computed by dividing by the nuclide's number density. The estimator given in \cref{eqn:general-macro} is used for all reaction types which are only dependent on the incident energy of a neutron.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Total Cross Section}
@@ -82,7 +82,7 @@ An expression for the in-scatter approximation\cite{yamamoto2008simplified} to t
 \hat{\Sigma}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-It should be noted that an analog tally estimator must be used to compute the transport correction, since \cref{eqn:sigs1} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} must also be computed with analog tally estimators.
+It should be noted that an analog tally estimator must be used to compute the transport correction, since \cref{eqn:flux-weight-scatt-moment} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} must also be computed with analog tally estimators.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Scattering Multiplicity Matrix}
@@ -95,30 +95,11 @@ The rate of scattering multiplicity reactions (\textit{i.e.}, $(n,xn)$ reactions
 \langle \upsilon \Sigma_{s}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_g}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \sum_j \upsilon_j \Sigma_j (\mathbf{r}, E' \rightarrow E, \mathbf{\Omega}) \psi(\mathbf{r}, E', \mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent where $\hat{\upsilon}_{j,k,g}$ is the scattering multiplicity for the $i$\textsuperscript{th} reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ (see \autoref{eqn:flux-weight-scatt-moment}) is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
+\noindent where $\hat{\upsilon}_{j,k,g}$ is the scattering multiplicity for the $i$\textsuperscript{th} reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ (\cref{eqn:flux-weight-scatt-moment}) is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
 
 \begin{equation}
 \label{eqn:scatt-mult-mat}
 \hat{\upsilon}_{k,g'\rightarrow g} = \frac{{\langle \upsilon \Sigma_{s0}, \psi \rangle}_{k,g'\rightarrow g}}{{\langle \Sigma_{s0}, \psi \rangle}_{k,g'\rightarrow g}}
-\end{equation}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Scattering Probability Matrix}
-\label{subsubsec:tally-types-scatt-prob-mat}
-
-The group-to-group scattering probabilities are calculated as:
-
-%\begin{equation}
-%\langle \sigma_{s,g'\rightarrow g} \phi \rangle = \int_{r \in V} dr \int_{4\pi} d\Omega' \int_{E_{g'}}^{E_{g'-1}} dE' \int_{4\pi} d\Omega \int_{E_g}^{E_{g-1}} dE \; \sigma_{s} (r, E' \rightarrow E, \Omega' \cdot \Omega) \psi(r, E', \Omega')
-%\end{equation}
-%
-%\begin{equation}
-%\langle \sigma_{s,0,g'} \phi \rangle = \int_{r \in V} dr \int_{4\pi} d\Omega' \int_{E_{g'}}^{E_{g'-1}} dE' \int_{4\pi} d\Omega \int_{0}^{\infty} dE \; \sigma_s (r, E' \rightarrow E, \Omega' \cdot \Omega) \psi(r, E', \Omega')
-%\end{equation}
-
-\begin{equation}
-\label{eqn:scatt-prob-mat}
-\hat{P}_{s\ell,k,g'\rightarrow g} = \frac{{\langle \Sigma_{s\ell}, \psi \rangle}_{k,g'\rightarrow g}}{{\langle \Sigma_{s0}, \psi \rangle}_{k,g'}}
 \end{equation}
 
 
@@ -151,14 +132,21 @@ A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,
 
 %To incorporate the effect of neutron multiplication from $(n,xn)$ reactions in the above relation, the nu parameter can be set to `True`.
 
-An alternative ``consistent'' form of the scattering matrix can be computed as the product of the scatter cross section and group-to-group scattering probabilities. Unlike the formulation in \cref{eqn:scatt-macro}, the consistent formulation is computed from the outscattering cross section $\hat{\Sigma}_{s,k,g}$ which may be tallied using track-length estimators. This ensures that reaction rate balance is exactly preserved with a total cross section (\cref{eqn:total-macro}) computed using a track-length estimator. In particular, the consistent formulation computes the Legendre scattering moments from the scattering probability matrix $\hat{P}_{s\ell,g'\rightarrow g}$ (\cref{eqn:scatt-prob-mat}) and outscattering cross section $\Sigma_{s,k,g}$ as follows:
+An alternative ``consistent'' form of the scattering matrix can be computed as the product of the scatter cross section and group-to-group scattering probabilities. Unlike the formulation in \cref{eqn:scatt-macro}, the consistent formulation is computed from the outscattering cross section $\hat{\Sigma}_{s,k,g}$ which may be tallied using track-length estimators. This ensures that reaction rate balance is exactly preserved with a total cross section (\cref{eqn:total-macro}) computed using a track-length estimator. In particular, the consistent formulation computes the Legendre scattering moments from the scattering probability matrix $\hat{P}_{s\ell,g'\rightarrow g}$ (\cref{eqn:scatt-prob-mat}) and outscattering cross section $\hat{\Sigma}_{s,k,g}$,
 
 \begin{equation}
 \label{eqn:scatt-mat-consistent}
 \hat{\Sigma}_{s\ell,g'\rightarrow g} = \hat{\Sigma}_{s,k,g} \times \hat{P}_{s\ell,k,g'\rightarrow g}
 \end{equation}
 
-\noindent The effects of neutron multipication from $(n,xn)$ reactions can be easily incorporated into the consistent scattering matrix formulation by multiplying by the multiplicity $\hat{\upsilon}_{k,g'\rightarrow g}$ (\cref{eqn:scatt-mult-mat}):
+\noindent where the group-to-group scattering probabilities are calculated as follows:
+
+\begin{equation}
+\label{eqn:scatt-prob-mat}
+\hat{P}_{s\ell,k,g'\rightarrow g} = \frac{{\langle \Sigma_{s\ell}, \psi \rangle}_{k,g'\rightarrow g}}{{\langle \Sigma_{s0}, \psi \rangle}_{k,g'}}
+\end{equation}
+
+The effects of neutron multiplication from $(n,xn)$ reactions can be easily incorporated into the consistent scattering matrix formulation by multiplying by the multiplicity $\hat{\upsilon}_{k,g'\rightarrow g}$ (\cref{eqn:scatt-mult-mat}):
 
 \begin{equation}
 \label{eqn:nuscatt-mat-consistent}
