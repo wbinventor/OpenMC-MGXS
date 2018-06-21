@@ -54,15 +54,21 @@ The total cross section $\hat{\Sigma}_{t}$ is a special case of \cref{eqn:genera
 \hat{\Sigma}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-A transport correction is often used to incorporate anisotropic scattering effects into the transport equation with an isotropic scattering kernel. An expression for the in-scatter approximation \cite{yamamoto2008simplified} to the transport correction is computed with an OpenMC tally for the first Legendre scattering moment:
+A transport correction is often used to incorporate anisotropic scattering effects into the transport equation with an isotropic scattering kernel. The transport correction is defined in terms of the moment of the scattering kernel with the $\ell^{th}$ Legendre polynomial $P_{\ell}(\mu)$:
 
-\todo[inline]{PR: We should really define $\Sigma_{s\ell}$ here. Otherwise it's not clear what $\Sigma_{s1}$ is. The definition should include $d\mathbf{\Omega'}$ as a variable of integration.}
 \begin{equation}
-\label{eqn:sigs1}
-\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \Sigma_{s1}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E',\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\label{eqn:scatt-moment}
+\Sigma_{s,\ell}(\mathbf{r},E'\rightarrow E) = \displaystyle\int\limits_{-1}^{1} \Sigma_{s}(\mathbf{r},\mu,{E'\rightarrow E})P_{\ell}(\mu)\mathrm{d}\mu
 \end{equation}
 
-\noindent The spatially-homogenized and energy condensed transport-corrected total cross section is computed by summing over all incident energy groups:
+\noindent where the cosine of the angle between the incident neutron's incoming and outgoing directions $\mu$ is independent of the incoming angle $\mathbf{\Omega}$ in isotropic media. A tally for the $\ell^{th}$ spatially-homogenized and energy condensed Legendre scattering moment is thus defined as follows:
+
+\begin{equation}
+\label{eqn:flux-weight-scatt-moment}
+\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \Sigma_{s\ell}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E',\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\end{equation}
+
+An expression for the in-scatter approximation\cite{yamamoto2008simplified} to the transport correction is computed by summing the first Legendre scattering moment over all incident energy groups:
 
 \begin{equation}
 \label{eqn:transport-corr-macro}
@@ -89,7 +95,7 @@ The rate of scattering multiplicity reactions (\textit{i.e.}, $(n,xn)$ reactions
 \langle \upsilon \Sigma_{s}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_g}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \sum_j \upsilon_j \Sigma_j (\mathbf{r}, E' \rightarrow E, \mathbf{\Omega}) \psi(\mathbf{r}, E', \mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent where $\hat{\upsilon}_{j,k,g}$ is the scattering multiplicity for the $i$\textsuperscript{th} reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ is given by an expression similar to \cref{eqn:sigs1} and is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
+\noindent where $\hat{\upsilon}_{j,k,g}$ is the scattering multiplicity for the $i$\textsuperscript{th} reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ (see \autoref{eqn:flux-weight-scatt-moment}) is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
 
 \begin{equation}
 \label{eqn:scatt-mult-mat}
