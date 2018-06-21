@@ -23,15 +23,6 @@
 \newcommand{\cmark}{\ding{51}}%
 \newcommand{\xmark}{\ding{55}}%
 
-% Algorithm constructs
-\renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}}
-\newcommand\Algphase[1]{%
-\vspace*{-.7\baselineskip}\Statex\hspace*{\dimexpr-\algorithmicindent-2pt\relax}\rule{\columnwidth}{0.4pt}%
-\Statex\hspace*{-\algorithmicindent}{#1}%
-\vspace*{-.7\baselineskip}\Statex\hspace*{\dimexpr-\algorithmicindent-2pt\relax}\rule{\columnwidth}{0.4pt}%
-}
-\newcommand{\algrule}[1][.4pt]{\par\vskip.5\baselineskip\hrule height #1\par\vskip.5\baselineskip}
-
 \newcommand{\code}[2]{
   \subsection*{#1}
   \lstinputlisting{#2}
@@ -62,19 +53,21 @@
 
 \title{Multi-Group Cross Section Generation with the OpenMC Monte Carlo Particle Transport Code}
 
-\author[a]{William Boyd\footnote{Email: \href{mailto:wboyd@mit.edu}{wboyd@mit.edu}}}
+\author[a]{William Boyd\footnote{Email: \href{mailto:wboyd@mitre.org}{wboyd@mitre.org}}}
 \author[b]{Adam Nelson}
 \author[c]{Paul K. Romano}
-\author[a]{Samuel Shaner}
-\author[a]{Benoit Forget}
-\author[a]{Kord Smith}
+\author[d]{Samuel Shaner}
+\author[e]{Benoit Forget}
+\author[e]{Kord Smith}
 
-\affil[a]{Massachusetts Institute of Technology, Department of Nuclear Science
-  and Engineering, 77 Massachusetts Avenue, Building 24, Cambridge,
-  Massachusetts 02139}
-\affil[b]{Something}
+\affil[a]{MITRE Corporation, 7525 Colshire Drive, McLean, Virginia 22102}
+\affil[b]{Naval Reactors, 1000 Independence Ave. SW, Washington, D.C. 20585}
 \affil[c]{Argonne National Laboratory, Mathematics and Computer Science
   Division, 9700 South Cass Avenue, Lemont, Illinois 60439}
+\affil[d]{Yellowstone Energy, 1087 West River Street, Suite 200, Boise, Idaho 83702}
+\affil[e]{Massachusetts Institute of Technology, Department of Nuclear Science
+  and Engineering, 77 Massachusetts Avenue, Building 24, Cambridge,
+  Massachusetts 02139}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
