@@ -117,11 +117,7 @@ A unique option for isotropic in lab scattering is implemented in the OpenMC cod
 \subsection{Tally Estimators}
 \label{subsec:tally-est}
 
-\begin{itemize}[noitemsep]
-\item Table of the tally estimators acceptable for each MGXS type
-\item Mention tally estimators can be toggled? Or discuss in software design?
-\item Add footnote mentioning consistent scattering formulation
-\end{itemize}
+The \texttt{openmc.mgxs} module supports a variety of different tally estimators for each MGXS type as shown in \cref{tab:mgxs-tally-estimators}. Tallies with \textit{analog} estimators are only incremented when the scoring function of interest (\textit{i.e.}, reaction type) is explicitly sampled. In contrast, tallies with \textit{collision} and \textit{track-length} estimators are incremented for all scoring functions every time the appropriate region of phase space is sampled (\textit{e.g.}, energy group) in order to improve sample statistics. All MGX types currently support analog estimators, and most support collision and track-length estimators. However, all MGXS types which require a tally over outgoing energy (\textit{e.g.}, scattering matrix, fission spectrum, etc.) currently only support analog estimators. Future development of the \texttt{openmc.mgxs} module may implement a methodology\cite{nelson2014improved} which permits track-length estimators for tallies which depend on the outgoing neutron energy.
 
 \begin{table}[h!]
   \centering
