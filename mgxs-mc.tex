@@ -3,7 +3,7 @@
 \label{sec:mgxs-mc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-This section describes how multi-group cross sections may be computed using stochastic integration. In particular, this section outlines the types of tallies needed to generate MGXS and the arithmetic combinations used to combine different tallies.
+This section describes how multi-group cross sections may be computed using stochastic integration. In particular, this section outlines the types of Monte Carlo tallies, and the arithmetic combinations used to combine the tallies, necessary to generate MGXS.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inner Product Notation}
@@ -54,14 +54,14 @@ The total cross section $\hat{\Sigma}_{t}$ is a special case of \cref{eqn:genera
 \hat{\Sigma}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-A transport correction is often used to incorporate anisotropic scattering effects into the transport equation with an isotropic scattering kernel. The transport correction is defined in terms of the moment of the scattering kernel with the $\ell^{th}$ Legendre polynomial $P_{\ell}(\mu)$:
+A transport correction is often used to incorporate anisotropic scattering effects into the transport equation with an isotropic scattering kernel. Before defining the transport correction, it is useful to first define the moment of the scattering kernel with the $\ell$\textsuperscript{th} Legendre polynomial $P_{\ell}(\mu)$:
 
 \begin{equation}
 \label{eqn:scatt-moment}
-\Sigma_{s,\ell}(\mathbf{r},E'\rightarrow E) = \displaystyle\int\limits_{-1}^{1} \Sigma_{s}(\mathbf{r},\mu,{E'\rightarrow E})P_{\ell}(\mu)\mathrm{d}\mu
+\Sigma_{s\ell}(\mathbf{r},E'\rightarrow E) = \displaystyle\int\limits_{-1}^{1} \Sigma_{s}(\mathbf{r},\mu,{E'\rightarrow E})P_{\ell}(\mu)\mathrm{d}\mu
 \end{equation}
 
-\noindent where the cosine of the angle between the incident neutron's incoming and outgoing directions $\mu$ is independent of the incoming angle $\mathbf{\Omega}$ in isotropic media. A tally for the $\ell^{th}$ spatially-homogenized and energy condensed Legendre scattering moment is thus defined as follows:
+\noindent where the cosine of the angle between the incident neutron's incoming and outgoing directions $\mu$ is independent of the incoming angle $\mathbf{\Omega}$ in isotropic media. A tally for the $\ell$\textsuperscript{th} spatially-homogenized and energy condensed Legendre scattering moment is thus defined as follows:
 
 \begin{equation}
 \label{eqn:flux-weight-scatt-moment}
@@ -95,7 +95,7 @@ The rate of scattering multiplicity reactions (\textit{i.e.}, $(n,xn)$ reactions
 \langle \upsilon \Sigma_{s}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_g}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \sum_j \upsilon_j \Sigma_j (\mathbf{r}, E' \rightarrow E, \mathbf{\Omega}) \psi(\mathbf{r}, E', \mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent where $\hat{\upsilon}_{j,k,g}$ is the scattering multiplicity for the $i$\textsuperscript{th} reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ (\cref{eqn:flux-weight-scatt-moment}) is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
+\noindent where $\hat{\upsilon}_{j,k,g}$ is the scattering multiplicity for the $j$\textsuperscript{th} multiplicity reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ (\cref{eqn:flux-weight-scatt-moment}) is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
 
 \begin{equation}
 \label{eqn:scatt-mult-mat}
@@ -191,7 +191,7 @@ The fission production matrix from group $g'$ into group $g$ is given by the fol
 \hat{\chi}_{k,g} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}
 \end{equation}
 
-\noindent This expression produces a normalized discrete probability distribution for the energy of neutrons emitted from fission. The fission spectrum is dependent on the outgoing neutron energy and must be computed with analog tally estimators. Similar to the fission production cross section, the fission energy spectrum can also be computed for the separate prompt and delayed component as follows:
+\noindent This expression produces a normalized discrete probability distribution for the energy of neutrons emitted from fission. The fission spectrum is dependent on the outgoing neutron energy and must be computed with analog tally estimators. Similar to the fission production cross section, the fission energy spectrum can also be computed for the separate prompt and delayed components as follows:
 
 \begin{equation}
 \label{eqn:chi-specific}
@@ -217,7 +217,7 @@ The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another u
 
 \begin{equation}
 \label{eqn:beta}
-\hat{\beta}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d \phi \rangle_{k,g}}{\langle \nu \Sigma_f \phi \rangle_{k,g}}
+\hat{\beta}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g}}{\langle \nu \Sigma_f, \psi \rangle_{k,g}}
 \end{equation}
 
 \noindent While the delayed neutron fraction is typically not computed as an energy-dependent quantity, the energy group subscript is included for consistency.
@@ -230,7 +230,7 @@ The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed a
 
 \begin{equation}
 \label{eqn:lambda}
-\hat{\lambda}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d \phi \rangle_{k,g}}{\Big\langle \frac{1}{\lambda^{d}} \nu \Sigma_f^d \phi \Big\rangle_{k,g}}
+\hat{\lambda}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g}}{\Big\langle \frac{1}{\lambda^{d}} \nu \Sigma_f^d, \psi \Big\rangle_{k,g}}
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
