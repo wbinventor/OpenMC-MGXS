@@ -37,7 +37,7 @@ OpenMC simulations were used to compute both the MGXS as well as reference eigen
 \begin{table}[h!]
   \centering
   \caption{Reference OpenMC eigenvalues for each benchmark.}
-  \label{tab:keff-reference} 
+  \label{tab:keff-reference}
   \begin{tabular}{c c}
   \toprule
   {\bf Assembly} &
@@ -100,7 +100,7 @@ The bias is listed for both benchmarks in \cref{tab:keff-bias} for 2-, 8- and 70
 \begin{table}[h!]
   \centering
   \caption{OpenMOC eigenvalue bias $\Delta\rho$.}
-  \label{tab:keff-bias} 
+  \label{tab:keff-bias}
   \begin{tabular}{l r r r}
   \toprule
   \textbf{Benchmark} & \textbf{2-Group} & \textbf{8-Group} & \textbf{70-Group} \\
@@ -112,7 +112,7 @@ The bias is listed for both benchmarks in \cref{tab:keff-bias} for 2-, 8- and 70
 \end{tabular}
 \end{table}
 
-The OpenMOC energy-integrated pin-wise fission rates were compared to the reference OpenMC fission rates in \cref{fig:benchmarks-fiss-rates}. The percent relative errors for each pin's fission rates were computed and the maximum and mean errors are listed in \cref{tab:fiss-errors}. In particular, the maximum errors are the maximum of the absolute values of the errors along with the appropriate sign, while the mean errors are the averages of the absolute error magnitudes. The spatial distributions of fission rate errors with 70-groups are plotted as heatmaps for both benchmarks in \cref{fig:fiss-errors}. These results demonstrate that pin-wise fission rates can be predicted to within 1\% accuracy with MGXS generated from OpenMC if the energy discretization is sufficiently refined. The systematic trends in the spatial distributions -- namely, the fission rates are generally overpredicted for pins near the reflector and underpredicted for pins along the inter-assembly interfaces of the colorset benchmark -- are likely due to the fact that the moderating effects of the nearby reflector and/or CRGTs is not accounted for in the MGXS generated for the fuel pins. Future work may develop techniques to account for these spatial self-shielding effects using the \texttt{openmc.mgxs} module.
+The OpenMOC energy-integrated pin-wise fission rates were compared to the reference OpenMC fission rates in \cref{fig:benchmarks-fiss-rates}. The percent relative errors for each pin's fission rates were computed and the maximum and mean errors are listed in \cref{tab:fiss-errors}. In particular, the maximum errors are the maximum of the absolute values of the errors along with the appropriate sign, while the mean errors are the averages of the absolute error magnitudes. The spatial distributions of fission rate errors with 70-groups are plotted as heatmaps for both benchmarks in \cref{fig:fiss-errors}. These results demonstrate that pin-wise fission rates can be predicted to within 1\% accuracy with MGXS generated from OpenMC if the energy discretization is sufficiently refined. The systematic trends in the spatial distributions -- specifically, the fission rates are generally overpredicted for pins near the reflector and underpredicted for pins along the inter-assembly interfaces of the colorset benchmark -- are likely due to the fact that the moderating effects of the nearby reflector and/or CRGTs is not accounted for in the MGXS generated for the fuel pins. Future work may develop techniques to account for these spatial self-shielding effects using the \texttt{openmc.mgxs} module.
 
 \begin{table}[h!]
   \centering
