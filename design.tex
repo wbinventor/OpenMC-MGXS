@@ -70,7 +70,7 @@ object reads in the tally results and can then be used by the
 The \texttt{openmc.mgxs} module takes advantage of many of the existing features of the Python API discussed in \cref{sec:openmc}. When a user loads tally results from a statepoint and displays them or stores them to disk, the following sequence of events happens:
 
 \begin{itemize}[noitemsep]
-\item Reaction rate and flux \texttt{Tally} objects are obtained using tally slicing. This is necessary because during input generation, the tallies for multiple MGXS objects may have been merged into fewer tallies. Slicing returns a \texttt{Tally} object with only the filters, nuclides and scores required for the desired MGXS.
+\item Reaction rate and flux \texttt{Tally} objects are obtained using tally slicing. This is necessary because during input generation, the tallies for multiple \texttt{MGXS} objects may have been merged into fewer tallies. Slicing returns a \texttt{Tally} object with only the filters, nuclides and scores required for the desired MGXS.
 \item A derived cross section \texttt{Tally} object is produced by using tally arithmetic to divide the reaction rate tally by the flux tally for all energy groups, nuclides and spatial homogenization zones. The time to perform these operations is minimal since the tally results are stored in dense NumPy arrays which support vector arithmetic.
 \item If a user requests a Pandas DataFrame for an \texttt{MGXS} object, it is produced by first generating a Pandas Dataframe for the derived cross section tally and then modifying it with a few user-friendly customizations for MGXS applications (\textit{e.g.}, labeling energy groups).
 \end{itemize}
@@ -111,7 +111,7 @@ Microscopic cross sections are computed for spatial domains with homogeneous mat
 \subsubsection{Isotropic in Lab Scattering}
 \label{subsec:iso-in-lab}
 
-A unique option for isotropic in lab scattering is implemented in the OpenMC code. The isotropic in lab feature, abbreviated as \emph{iso-in-lab}, may be useful to quantify the ability of multi-group codes to capture anisotropic scattering effects with higher order scattering matrices or transport correction schemes. The iso-in-lab feature is implemented as an optional attribute for each nuclide or element in a simulation. When iso-in-lab scattering is specified for a nuclide or element, the outgoing neutron energy is sampled from the scattering laws prescribed by the continuous energy cross section library, but the outgoing neutron direction of motion is sampled from an isotropic in lab distribution.
+A unique option for isotropic in the laboratory frame scattering is implemented in the OpenMC code. This feature, abbreviated as \emph{iso-in-lab}, may be useful to quantify the ability of multi-group codes to capture anisotropic scattering effects with higher order scattering matrices or transport correction schemes. The iso-in-lab feature is implemented as an optional attribute for each nuclide or element in a simulation. When iso-in-lab scattering is specified for a nuclide or element, the outgoing neutron energy is sampled from the scattering laws prescribed by the continuous energy cross section library, but the outgoing neutron direction of motion is sampled from a distribution that is isotropic in the laboratory frame.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Tally Estimators}
