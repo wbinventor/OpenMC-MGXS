@@ -173,18 +173,32 @@ The fission production macroscopic cross section $\nu\hat{\Sigma}_{f,k,g}$ may b
 
 \noindent Where the superscript $p$ is used to denote prompt neutrons and the superscript $d$ is used to denote delayed neutrons of the specific precursor group.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Fission Energy Spectrum}
-\label{subsubsec:tally-types-chi}
 
-The fission production matrix from group $g'$ into group $g$ is given by the following inner product:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fission Production Matrix}
+\label{subsubsec:tally-types-fiss-matrix}
+
+The rate of group $g'$ neutrons fissioning to produce group $g$ neutrons is given by the following inner product:
 
 \begin{equation}
 \label{eqn:nu-fiss-energies}
 \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \nu\Sigma_{f}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent The fission spectrum can then be computed from this tally by summing over incoming and outgoing energy groups:
+\noindent This tally can be divided by the group-wise flux to compute the group-to-group fission production matrix:
+
+\begin{equation}
+\label{eqn:fiss-prod-mat}
+\nu\Sigma_{f,g'\rightarrow g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g}}
+\end{equation}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fission Energy Spectrum}
+\label{subsubsec:tally-types-chi}
+
+The fission spectrum can be computed from \cref{eqn:nu-fiss-energies} by summing over incoming and outgoing energy groups:
 
 \begin{equation}
 \label{eqn:chi}
