@@ -72,14 +72,14 @@ An expression for the in-scatter approximation\cite{yamamoto2008simplified} to t
 
 \begin{equation}
 \label{eqn:transport-corr-macro}
-\hat{\Sigma}_{tr,k,g} = \displaystyle\sum\limits_{g'=1}^{G} \langle{\Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}}
+\Delta\hat{\Sigma}_{tr,k,g} = \displaystyle\sum\limits_{g'=1}^{G} \langle{\Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}}
 \end{equation}
 
 \noindent The transport correction is then subtracted from the group-wise total collision rate and normalized by the flux to compute the transport-corrected total cross section:
 
 \begin{equation}
 \label{eqn:sigt-transport-macro}
-\hat{\Sigma}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}
+\hat{\Sigma}_{tr,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
 It should be noted that an analog tally estimator must be used to compute the transport correction, since \cref{eqn:flux-weight-scatt-moment} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} must also be computed with analog tally estimators.
@@ -127,7 +127,7 @@ A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,
 
 \begin{equation}
 \label{eqn:scatt-trans-macro}
-\hat{\Sigma}_{s,k,g'\rightarrow g} = \frac{\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g} - \delta_{g,g'} \hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g'}}
+\hat{\Sigma}_{s,k,g'\rightarrow g} = \frac{\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g} - \delta_{g,g'} \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g'}}
 \end{equation}
 
 %To incorporate the effect of neutron multiplication from $(n,xn)$ reactions in the above relation, the nu parameter can be set to `True`.
@@ -274,7 +274,7 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \midrule
 
-  \textbf{\parbox{1.5cm}{\bf Transport Correction}} & $\hat{\Sigma}_{tr,k,g}$ & $\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyout \\
+  \textbf{\parbox{1.5cm}{\bf Transport Correction}} & $\Delta\hat{\Sigma}_{tr,k,g}$ & $\langle \Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}$ & space, energyout \\
 
   \midrule
 
