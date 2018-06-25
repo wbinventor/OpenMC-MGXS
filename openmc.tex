@@ -17,7 +17,7 @@ OpenMC features a flexible, low-overhead tally system that enables users to obta
 \end{equation}
 In addition to filters and scores, it is also possible to obtain reaction rates for individual nuclides by specifying a list of nuclides. Each tally definition is permitted to have multiple filters, multiple scores, and multiple nuclides. Additionally, the estimator used to score events can also be specified on a per-tally basis.
 
-A wide range of filters and scores have been implemented as of the version 0.9.0 release of OpenMC\cite{openmc-090}. The available filters can generally be categorized as follows:
+A wide range of filters and scores have been implemented as of the version 0.10.0 release of OpenMC\cite{openmc-090}. The available filters can generally be categorized as follows:
 \begin{itemize}[noitemsep]
 \item \emph{Spatial domain}: Tally events by universe, material, cell, mesh
 \item \emph{Energy domain}: Tally events based on both incoming and outgoing particle energy
@@ -25,7 +25,7 @@ A wide range of filters and scores have been implemented as of the version 0.9.0
 \item \emph{Energy function}: Multiplies tally scores by an arbitrary function of incident energy
 \item \emph{Delayed group}: Tally events that produced neutrons in particular delayed groups
 \end{itemize}
-The available scores in version 0.9.0 include: particle flux, all individual reaction rates, neutron production from fission (total, prompt, or delayed), Legendre and spherical harmonic scattering moments, spherical harmonic flux moments, inverse velocity, recoverable fission energy release, and the delayed neutron production-weighted decay rate. Taken together, these filters and scores permit all inner products identified in \cref{tab:tally-types} to be estimated via tallies in OpenMC.
+The available scores in version 0.10.0 include: particle flux, all individual reaction rates, neutron production from fission (total, prompt, or delayed), Legendre and spherical harmonic scattering moments, spherical harmonic flux moments, inverse velocity, recoverable fission energy release, and the delayed neutron production-weighted decay rate. Taken together, these filters and scores permit all inner products identified in \cref{tab:tally-types} to be estimated via tallies in OpenMC.
 
 %%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Python API}
