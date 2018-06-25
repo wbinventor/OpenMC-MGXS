@@ -82,7 +82,7 @@ An expression for the in-scatter approximation\cite{yamamoto2008simplified} to t
 \hat{\Sigma}_{tr,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-It should be noted that an analog tally estimator must be used to compute the transport correction, since \cref{eqn:flux-weight-scatt-moment} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} must also be computed with analog tally estimators.
+It should be noted that an analog tally estimator must be used to compute the transport correction, since \cref{eqn:flux-weight-scatt-moment} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} should be computed with analog tally estimators to maintain consistency with the transport correction.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Scattering Multiplicity Matrix}
@@ -172,7 +172,6 @@ The fission production macroscopic cross section $\nu\hat{\Sigma}_{f,k,g}$ may b
 \end{equation}
 
 \noindent Where the superscript $p$ is used to denote prompt neutrons and the superscript $d$ is used to denote delayed neutrons of the specific precursor group.
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
