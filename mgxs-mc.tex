@@ -20,7 +20,7 @@ The following sections use angle bracket notation $\langle \cdot , \cdot \rangle
 
 \begin{equation}
 \label{eqn:angle-rxn-rate}
-\langle \sigma_{x,i}, \psi \rangle_{k,g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \sigma_{x,i}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\langle \sigma_{x,i}, \psi \rangle_{k,g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \sigma_{x,i}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}.
 \end{equation}
 
 \noindent The inner product of a function with unity, such as the spatially-homogenized and energy-integrated scalar flux, is denoted by:
@@ -41,7 +41,7 @@ A general spatially-homogenized and energy condensed macroscopic multi-group cro
 \hat{\Sigma}_{x,k,g} = \frac{\langle \Sigma_{x}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-\noindent The microscopic MGXS for nuclide $i$ can be easily computed by dividing by the nuclide's number density. The estimator given in \cref{eqn:general-macro} is used for all reaction types which are only dependent on the incident energy of a neutron.
+\noindent The microscopic MGXS for nuclide $i$ can be easily computed by dividing by the nuclide's number density. The estimator given in \cref{eqn:general-macro} is used for all reaction types that are only dependent on the incident energy of a neutron.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Total Cross Section}
@@ -61,7 +61,7 @@ A transport correction is often used to incorporate anisotropic scattering effec
 \Sigma_{s\ell}(\mathbf{r},E'\rightarrow E) = \displaystyle\int\limits_{-1}^{1} \Sigma_{s}(\mathbf{r},\mu,{E'\rightarrow E})P_{\ell}(\mu)\mathrm{d}\mu
 \end{equation}
 
-\noindent where the cosine of the angle between the incident neutron's incoming and outgoing directions $\mu$ is independent of the incoming angle $\mathbf{\Omega}$ in isotropic media. A tally for the $\ell$\textsuperscript{th} spatially-homogenized and energy condensed Legendre scattering moment is thus defined as follows:
+\noindent where the cosine of the angle between the incident neutron's incoming and outgoing directions $\mu$ is independent of the incoming angle $\mathbf{\Omega}$ in isotropic media. A tally for the $\ell$\textsuperscript{th} spatially-homogenized and energy-condensed Legendre scattering moment is thus defined as follows:
 
 \begin{equation}
 \label{eqn:flux-weight-scatt-moment}
@@ -95,7 +95,7 @@ The rate of scattering multiplicity reactions (\textit{i.e.}, $(n,xn)$ reactions
 \langle \upsilon \Sigma_{s}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_g}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \sum_j \upsilon_j \Sigma_j (\mathbf{r}, E' \rightarrow E, \mathbf{\Omega}) \psi(\mathbf{r}, E', \mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
 \end{equation}
 
-\noindent where $\hat{\upsilon}_{j,k,g}$ is the scattering multiplicity for the $j$\textsuperscript{th} multiplicity reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ (\cref{eqn:flux-weight-scatt-moment}) is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
+\noindent where $\upsilon_j$ is the scattering multiplicity for the $j$\textsuperscript{th} multiplicity reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ (\cref{eqn:flux-weight-scatt-moment}) is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
 
 \begin{equation}
 \label{eqn:scatt-mult-mat}
@@ -132,11 +132,11 @@ A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,
 
 %To incorporate the effect of neutron multiplication from $(n,xn)$ reactions in the above relation, the nu parameter can be set to `True`.
 
-An alternative ``consistent'' form of the scattering matrix can be computed as the product of the scatter cross section and group-to-group scattering probabilities. Unlike the formulation in \cref{eqn:scatt-macro}, the consistent formulation is computed from the outscattering cross section $\hat{\Sigma}_{s,k,g}$ which may be tallied using track-length estimators. This ensures that reaction rate balance is exactly preserved with a total cross section (\cref{eqn:total-macro}) computed using a track-length estimator. In particular, the consistent formulation computes the Legendre scattering moments from the scattering probability matrix $\hat{P}_{s\ell,g'\rightarrow g}$ (\cref{eqn:scatt-prob-mat}) and outscattering cross section $\hat{\Sigma}_{s,k,g}$,
+An alternative ``consistent'' form of the scattering matrix can be computed as the product of the scatter cross section and group-to-group scattering probabilities. Unlike the formulation in \cref{eqn:scatt-macro}, the consistent formulation is computed from the outscattering cross section $\hat{\Sigma}_{s,k,g}$, which may be tallied using track-length estimators. This ensures that reaction rate balance is exactly preserved with a total cross section (\cref{eqn:total-macro}) computed using a track-length estimator. In particular, the consistent formulation computes the Legendre scattering moments from the scattering probability matrix $\hat{P}_{s\ell,g'\rightarrow g}$ (\cref{eqn:scatt-prob-mat}) and outscattering cross section $\hat{\Sigma}_{s,k,g}$,
 
 \begin{equation}
 \label{eqn:scatt-mat-consistent}
-\hat{\Sigma}_{s\ell,g'\rightarrow g} = \hat{\Sigma}_{s,k,g} \times \hat{P}_{s\ell,k,g'\rightarrow g}
+\hat{\Sigma}_{s\ell,k,g'\rightarrow g} = \hat{\Sigma}_{s,k,g} \times \hat{P}_{s\ell,k,g'\rightarrow g}
 \end{equation}
 
 \noindent where the group-to-group scattering probabilities are calculated as follows:
@@ -171,7 +171,7 @@ The fission production macroscopic cross section $\nu\hat{\Sigma}_{f,k,g}$ may b
 \nu\hat{\Sigma}_{f,k,g}^{p} = \frac{\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}} \qquad \qquad \nu\hat{\Sigma}_{f,k,g}^{d} = \frac{\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-\noindent Where the superscript $p$ is used to denote prompt neutrons and the superscript $d$ is used to denote delayed neutrons of the specific precursor group.
+\noindent where the superscript $p$ is used to denote prompt neutrons and the superscript $d$ is used to denote delayed neutrons of the specific precursor group.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -189,7 +189,7 @@ The rate of group $g'$ neutrons fissioning to produce group $g$ neutrons is give
 
 \begin{equation}
 \label{eqn:fiss-prod-mat}
-\nu\Sigma_{f,g'\rightarrow g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g}}
+\nu\hat{\Sigma}_{f,g'\rightarrow g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
 
