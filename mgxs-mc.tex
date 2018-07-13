@@ -3,45 +3,45 @@
 \label{sec:mgxs-mc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-This section describes how the multi-group cross sections introduced in \cref{sec:mg-theory} may be computed using stochastic integration. In particular, this section outlines the types of Monte Carlo tallies, and the arithmetic combinations used to combine the tallies, necessary to generate MGXS.
+This section describes how the multi-group cross sections introduced in \cref{sec:mg-theory} may be computed by using stochastic integration. In particular, this section outlines the types of Monte Carlo tallies and the arithmetic combinations used to combine the tallies, necessary to generate MGXS.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inner Product Notation}
 \label{subsubsec:tally-types-notation}
 
-The following sections use angle bracket notation $\langle \cdot , \cdot \rangle$ to represent inner products in phase space. This may correspond to integrals over incoming and/or outgoing energy, space, and angle. Using this notation, a tally estimator for reaction rate $x$ is represented as follows:
+The following sections use angle bracket notation $\langle \cdot , \cdot \rangle$ to represent inner products in phase space. This may correspond to integrals over incoming and/or outgoing energy, space, and angle. With this notation, a tally estimator for reaction rate $x$ is represented as follows:
 
 \begin{equation}
 \label{eqn:inner-prod}
-\langle \Sigma_x, \psi \rangle = \int_{V} \int_{S} \int_{E} \Sigma_{x}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\langle \Sigma_x, \psi \rangle = \int_{V} \int_{S} \int_{E} \Sigma_{x}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}\,,
 \end{equation}
 
-\noindent where $\Sigma_x$ is the macroscopic cross section, $\psi$ is the angular neutron flux, and $V$, $S$ and $E$ are the integration bounds in space $\mathbf{r}$, solid angle $\mathbf{\Omega}$ and energy $E$, respectively. The notation is specialized throughout this section with subscripts to indicate the subsets of phase space that are integrated over in the inner product. In particular, subscript $k$ refers to a volume integral over $V_{k}$ for some region of space $k$ for spatial homogenization, while subscript $g$ corresponds to an integral over energies with $E \in [E_{g}, E_{g-1}]$ for energy condensation. For example, the microscopic reaction rate for reaction $x$ by nuclide $i$ is denoted as:
+\noindent where $\Sigma_x$ is the macroscopic cross section; $\psi$ is the angular neutron flux; and $V$, $S$, and $E$ are the integration bounds in space $\mathbf{r}$, solid angle $\mathbf{\Omega}$, and energy $E$, respectively. The notation is specialized throughout this section with subscripts to indicate the subsets of phase space that are integrated over in the inner product. In particular, subscript $k$ refers to a volume integral over $V_{k}$ for some region of space $k$ for spatial homogenization, while subscript $g$ corresponds to an integral over energies with $E \in [E_{g}, E_{g-1}]$ for energy condensation. For example, the microscopic reaction rate for reaction $x$ by nuclide $i$ is denoted as
 
 \begin{equation}
 \label{eqn:angle-rxn-rate}
 \langle \sigma_{x,i}, \psi \rangle_{k,g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \sigma_{x,i}(\mathbf{r},E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}.
 \end{equation}
 
-\noindent The inner product of a function with unity, such as the spatially-homogenized and energy-integrated scalar flux, is denoted by:
+\noindent The inner product of a function with unity, such as the spatially homogenized and energy-integrated scalar flux, is denoted by
 
 \begin{equation}
 \label{eqn:angle-flux}
-\langle \psi \rangle_{k,g} \equiv \langle \psi, \mathbb{1} \rangle_{k,g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\langle \psi \rangle_{k,g} \equiv \langle \psi, \mathbb{1} \rangle_{k,g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}.
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{General Reaction Cross Section}
 \label{subsubsec:tally-types-gen-xs}
 
-A general spatially-homogenized and energy condensed macroscopic multi-group cross section for reaction $x$, spatial zone $k$ and energy group $g$ is simply the ratio of the group-wise reaction rates $\langle \Sigma_{x}, \psi \rangle_{k,g}$ and fluxes $\langle \psi \rangle_{k,g}$:
+A general spatially homogenized and energy-condensed macroscopic multi-group cross section for reaction $x$, spatial zone $k$, and energy group $g$ is simply the ratio of the groupwise reaction rates $\langle \Sigma_{x}, \psi \rangle_{k,g}$ and fluxes $\langle \psi \rangle_{k,g}$:
 
 \begin{equation}
 \label{eqn:general-macro}
 \hat{\Sigma}_{x,k,g} = \frac{\langle \Sigma_{x}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-\noindent The microscopic MGXS for nuclide $i$ can be easily computed by dividing by the nuclide's number density. The estimator given in \cref{eqn:general-macro} is used for all reaction types that are only dependent on the incident energy of a neutron.
+\noindent The microscopic MGXS for nuclide $i$ can be easily computed by dividing by the nuclide's number density. The estimator given in \cref{eqn:general-macro} is used for all reaction types that are dependent only on the incident energy of a neutron.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Total Cross Section}
@@ -51,55 +51,55 @@ The total cross section $\hat{\Sigma}_{t}$ is a special case of \cref{eqn:genera
 
 \begin{equation}
 \label{eqn:total-macro}
-\hat{\Sigma}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\hat{\Sigma}_{t,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}.
 \end{equation}
 
-A transport correction is often used to incorporate anisotropic scattering effects into the transport equation with an isotropic scattering kernel. Before defining the transport correction, it is useful to first define the moment of the scattering kernel with the $\ell$\textsuperscript{th} Legendre polynomial $P_{\ell}(\mu)$:
+A transport correction is often used to incorporate anisotropic scattering effects into the transport equation with an isotropic scattering kernel. Before defining the transport correction, we first define the moment of the scattering kernel with the $\ell$\textsuperscript{th} Legendre polynomial $P_{\ell}(\mu)$:
 
 \begin{equation}
 \label{eqn:scatt-moment}
-\Sigma_{s\ell}(\mathbf{r},E'\rightarrow E) = \displaystyle\int\limits_{-1}^{1} \Sigma_{s}(\mathbf{r},\mu,{E'\rightarrow E})P_{\ell}(\mu)\mathrm{d}\mu
+\Sigma_{s\ell}(\mathbf{r},E'\rightarrow E) = \displaystyle\int\limits_{-1}^{1} \Sigma_{s}(\mathbf{r},\mu,{E'\rightarrow E})P_{\ell}(\mu)\mathrm{d}\mu\,,
 \end{equation}
 
-\noindent where the cosine of the angle between the incident neutron's incoming and outgoing directions $\mu$ is independent of the incoming angle $\mathbf{\Omega}$ in isotropic media. A tally for the $\ell$\textsuperscript{th} spatially-homogenized and energy-condensed Legendre scattering moment is thus defined as follows:
+\noindent where the cosine of the angle between the incident neutron's incoming and outgoing directions $\mu$ is independent of the incoming angle $\mathbf{\Omega}$ in isotropic media. A tally for the $\ell$\textsuperscript{th} spatially homogenized and energy-condensed Legendre scattering moment is thus defined as follows:
 
 \begin{equation}
 \label{eqn:flux-weight-scatt-moment}
-\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \Sigma_{s\ell}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E',\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \Sigma_{s\ell}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E',\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}.
 \end{equation}
 
 An expression for the in-scatter approximation\cite{yamamoto2008simplified} to the transport correction is computed by summing the first Legendre scattering moment over all incident energy groups:
 
 \begin{equation}
 \label{eqn:transport-corr-macro}
-\Delta\hat{\Sigma}_{tr,k,g} = \displaystyle\sum\limits_{g'=1}^{G} \langle{\Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}}
+\Delta\hat{\Sigma}_{tr,k,g} = \displaystyle\sum\limits_{g'=1}^{G} \langle{\Sigma_{s1}, \psi \rangle_{k,g'\rightarrow g}}.
 \end{equation}
 
-\noindent The transport correction is then subtracted from the group-wise total collision rate and normalized by the flux to compute the transport-corrected total cross section:
+\noindent The transport correction is then subtracted from the groupwise total collision rate and normalized by the flux to compute the transport-corrected total cross section:
 
 \begin{equation}
 \label{eqn:sigt-transport-macro}
-\hat{\Sigma}_{tr,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}
+\hat{\Sigma}_{tr,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}.
 \end{equation}
 
-It should be noted that an analog tally estimator must be used to compute the transport correction, since \cref{eqn:flux-weight-scatt-moment} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} should be computed with analog tally estimators to maintain consistency with the transport correction.
+We note that an analog tally estimator must be used to compute the transport correction, since \cref{eqn:flux-weight-scatt-moment} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} should be computed with analog tally estimators to maintain consistency with the transport correction.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Scattering Multiplicity Matrix}
 \label{subsubsec:tally-types-mult-mat}
 
-The rate of scattering multiplicity reactions (\textit{i.e.}, $(n,xn)$ reactions) is given by the following expression:
+The rate of scattering multiplicity reactions (\textrm{i.e.}, $(n,xn)$ reactions) is given by the following expression:
 
 \begin{equation}
 \label{eqn:scatt-mult-rate}
-\langle \upsilon \Sigma_{s}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_g}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \sum_j \upsilon_j \Sigma_j (\mathbf{r}, E' \rightarrow E, \mathbf{\Omega}) \psi(\mathbf{r}, E', \mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\langle \upsilon \Sigma_{s}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_g}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \sum_j \upsilon_j \Sigma_j (\mathbf{r}, E' \rightarrow E, \mathbf{\Omega}) \psi(\mathbf{r}, E', \mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}\,,
 \end{equation}
 
 \noindent where $\upsilon_j$ is the scattering multiplicity for the $j$\textsuperscript{th} multiplicity reaction. The isotropic scattering moment $\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g}$ (\cref{eqn:flux-weight-scatt-moment}) is divided from \cref{eqn:scatt-mult-rate} to compute the scattering multiplicity matrix:
 
 \begin{equation}
 \label{eqn:scatt-mult-mat}
-\hat{\upsilon}_{k,g'\rightarrow g} = \frac{{\langle \upsilon \Sigma_{s}, \psi \rangle}_{k,g'\rightarrow g}}{{\langle \Sigma_{s0}, \psi \rangle}_{k,g'\rightarrow g}}
+\hat{\upsilon}_{k,g'\rightarrow g} = \frac{{\langle \upsilon \Sigma_{s}, \psi \rangle}_{k,g'\rightarrow g}}{{\langle \Sigma_{s0}, \psi \rangle}_{k,g'\rightarrow g}}.
 \end{equation}
 
 
@@ -118,7 +118,7 @@ The isotropic scattering matrix is computed with an inner product of scattering 
 
 \begin{equation}
 \label{eqn:scatt-macro}
-\hat{\Sigma}_{s\ell,k,g'\rightarrow g} = \frac{\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g'}}
+\hat{\Sigma}_{s\ell,k,g'\rightarrow g} = \frac{\langle \Sigma_{s\ell}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g'}}.
 \end{equation}
 
 \noindent Analog tally estimators must be used since the scattering moments depend on the neutron's outgoing energy.
@@ -127,30 +127,30 @@ A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,
 
 \begin{equation}
 \label{eqn:scatt-trans-macro}
-\hat{\Sigma}_{s,k,g'\rightarrow g} = \frac{\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g} - \delta_{g,g'} \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g'}}
+\hat{\Sigma}_{s,k,g'\rightarrow g} = \frac{\langle \Sigma_{s0}, \psi \rangle_{k,g'\rightarrow g} - \delta_{g,g'} \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g'}}.
 \end{equation}
 
 %To incorporate the effect of neutron multiplication from $(n,xn)$ reactions in the above relation, the nu parameter can be set to `True`.
 
-An alternative ``consistent'' form of the scattering matrix can be computed as the product of the scatter cross section and group-to-group scattering probabilities. Unlike the formulation in \cref{eqn:scatt-macro}, the consistent formulation is computed from the outscattering cross section $\hat{\Sigma}_{s,k,g}$, which may be tallied using track-length estimators. This ensures that reaction rate balance is exactly preserved with a total cross section (\cref{eqn:total-macro}) computed using a track-length estimator. In particular, the consistent formulation computes the Legendre scattering moments from the scattering probability matrix $\hat{P}_{s\ell,g'\rightarrow g}$ (\cref{eqn:scatt-prob-mat}) and outscattering cross section $\hat{\Sigma}_{s,k,g}$,
+An alternative ``consistent'' form of the scattering matrix can be computed as the product of the scatter cross section and group-to-group scattering probabilities. Unlike the formulation in \cref{eqn:scatt-macro}, the consistent formulation is computed from the outscattering cross section $\hat{\Sigma}_{s,k,g}$, which may be tallied by using track-length estimators. This ensures that the reaction rate balance is exactly preserved with a total cross section (\cref{eqn:total-macro}) computed by using a track-length estimator. In particular, the consistent formulation computes the Legendre scattering moments from the scattering probability matrix $\hat{P}_{s\ell,g'\rightarrow g}$ (\cref{eqn:scatt-prob-mat}) and outscattering cross section $\hat{\Sigma}_{s,k,g}$,
 
 \begin{equation}
 \label{eqn:scatt-mat-consistent}
-\hat{\Sigma}_{s\ell,k,g'\rightarrow g} = \hat{\Sigma}_{s,k,g} \times \hat{P}_{s\ell,k,g'\rightarrow g}
+\hat{\Sigma}_{s\ell,k,g'\rightarrow g} = \hat{\Sigma}_{s,k,g} \times \hat{P}_{s\ell,k,g'\rightarrow g}\,,
 \end{equation}
 
 \noindent where the group-to-group scattering probabilities are calculated as follows:
 
 \begin{equation}
 \label{eqn:scatt-prob-mat}
-\hat{P}_{s\ell,k,g'\rightarrow g} = \frac{{\langle \Sigma_{s\ell}, \psi \rangle}_{k,g'\rightarrow g}}{{\langle \Sigma_{s0}, \psi \rangle}_{k,g'}}
+\hat{P}_{s\ell,k,g'\rightarrow g} = \frac{{\langle \Sigma_{s\ell}, \psi \rangle}_{k,g'\rightarrow g}}{{\langle \Sigma_{s0}, \psi \rangle}_{k,g'}}.
 \end{equation}
 
 The effects of neutron multiplication from $(n,xn)$ reactions can be easily incorporated into the consistent scattering matrix formulation by multiplying by the multiplicity $\hat{\upsilon}_{k,g'\rightarrow g}$ (\cref{eqn:scatt-mult-mat}):
 
 \begin{equation}
 \label{eqn:nuscatt-mat-consistent}
-\hat{\Sigma}_{s\ell,k,g'\rightarrow g} = \hat{\upsilon}_{k,g'\rightarrow g} \times \hat{\Sigma}_{s,k,g} \times \hat{P}_{s\ell,k,g'\rightarrow g}
+\hat{\Sigma}_{s\ell,k,g'\rightarrow g} = \hat{\upsilon}_{k,g'\rightarrow g} \times \hat{\Sigma}_{s,k,g} \times \hat{P}_{s\ell,k,g'\rightarrow g}.
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -161,14 +161,14 @@ The fission production macroscopic cross section $\nu\hat{\Sigma}_{f,k,g}$ may b
 
 \begin{equation}
 \label{eqn:nu-fiss-macro}
-\nu\hat{\Sigma}_{f,k,g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\nu\hat{\Sigma}_{f,k,g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}.
 \end{equation}
 
 \noindent The prompt and delayed components of the fission production cross section, $\nu\hat{\Sigma}_{f,k,g}^{p}$ and $\nu\hat{\Sigma}_{f,k,g}^{d}$, can be computed in a similar manner:
 
 \begin{equation}
 \label{eqn:nu-fiss-macro-specific}
-\nu\hat{\Sigma}_{f,k,g}^{p} = \frac{\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}} \qquad \qquad \nu\hat{\Sigma}_{f,k,g}^{d} = \frac{\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\nu\hat{\Sigma}_{f,k,g}^{p} = \frac{\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}} \qquad , \qquad \nu\hat{\Sigma}_{f,k,g}^{d} = \frac{\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}\,,
 \end{equation}
 
 \noindent where the superscript $p$ is used to denote prompt neutrons and the superscript $d$ is used to denote delayed neutrons of the specific precursor group.
@@ -182,14 +182,14 @@ The rate of group $g'$ neutrons fissioning to produce group $g$ neutrons is give
 
 \begin{equation}
 \label{eqn:nu-fiss-energies}
-\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \nu\Sigma_{f}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}
+\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \int_{E_{g'}}^{E_{g'-1}} \nu\Sigma_{f}(\mathbf{r},E'\rightarrow E)\psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E'\mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}.
 \end{equation}
 
-\noindent This tally can be divided by the group-wise flux to compute the group-to-group fission production matrix:
+\noindent This tally can be divided by the groupwise flux to compute the group-to-group fission production matrix:
 
 \begin{equation}
 \label{eqn:fiss-prod-mat}
-\nu\hat{\Sigma}_{f,g'\rightarrow g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g}}
+\nu\hat{\Sigma}_{f,g'\rightarrow g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g}}.
 \end{equation}
 
 
@@ -201,36 +201,36 @@ The fission spectrum can be computed from \cref{eqn:nu-fiss-energies} by summing
 
 \begin{equation}
 \label{eqn:chi}
-\hat{\chi}_{k,g} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}
+\hat{\chi}_{k,g} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}.
 \end{equation}
 
-\noindent This expression produces a normalized discrete probability distribution for the energy of neutrons emitted from fission. The fission spectrum is dependent on the outgoing neutron energy and must be computed with analog tally estimators. Similar to the fission production cross section, the fission energy spectrum can also be computed for the separate prompt and delayed components as follows:
+\noindent This expression produces a normalized discrete probability distribution for the energy of neutrons emitted from fission. The fission spectrum is dependent on the outgoing neutron energy and must be computed with analog tally estimators. Similar to the fission production cross section, the fission energy spectrum can be computed for the separate prompt and delayed components as follows:
 
 \begin{equation}
 \label{eqn:chi-specific}
-\hat{\chi}_{k,g}^{p} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}} \qquad \qquad \hat{\chi}_{k,g}^{d} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}}
+\hat{\chi}_{k,g}^{p} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}} \qquad , \qquad \hat{\chi}_{k,g}^{d} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}}.
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inverse Velocity}
 \label{subsubsec:tally-types-inv-vel}
 
-The inverse velocity $\hat{\upsilon}_{k,g}^{-1}$ is a useful parameter for kinetics calculations and is computed as:
+The inverse velocity $\hat{\upsilon}_{k,g}^{-1}$ is a useful parameter for kinetics calculations and is computed as
 
 \begin{equation}
 \label{eqn:inverse-velocity}
-\hat{\upsilon}_{k,g}^{-1} = \frac{\langle \upsilon^{-1}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
+\hat{\upsilon}_{k,g}^{-1} = \frac{\langle \upsilon^{-1}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}.
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Delayed Neutron Fraction}
 \label{subsubsec:tally-types-beta}
 
-The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another useful parameter for kinetics calculations. It is computed as:
+The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another useful parameter for kinetics calculations. It is computed as,
 
 \begin{equation}
 \label{eqn:beta}
-\hat{\beta}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g}}{\langle \nu \Sigma_f, \psi \rangle_{k,g}}
+\hat{\beta}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g}}{\langle \nu \Sigma_f, \psi \rangle_{k,g}}.
 \end{equation}
 
 \noindent While the delayed neutron fraction is typically not computed as an energy-dependent quantity, the energy group subscript is included for consistency.
@@ -239,18 +239,18 @@ The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another u
 \subsection{Delayed Neutron Precursor Decay Rate}
 \label{subsubsec:tally-types-lambda}
 
-The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed as:
+The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed as
 
 \begin{equation}
 \label{eqn:lambda}
-\hat{\lambda}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g}}{\Big\langle \frac{1}{\lambda^{d}} \nu \Sigma_f^d, \psi \Big\rangle_{k,g}}
+\hat{\lambda}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g}}{\Big\langle \frac{1}{\lambda^{d}} \nu \Sigma_f^d, \psi \Big\rangle_{k,g}}.
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Summary}
 \label{subsec:tally-types-summary}
 
-The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections, and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by ``energy'' (incoming energy) and/or ``energyout'' (outgoing energy) filters in the table. A spatial homogenization domain may be specified for a material, cell, universe or structured mesh.
+The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by ``energy'' (incoming energy) and/or ``energyout'' (outgoing energy) filters in the table. A spatial homogenization domain may be specified for a material, cell, universe, or structured mesh.
 
 \begin{table}[h!]
   \centering
