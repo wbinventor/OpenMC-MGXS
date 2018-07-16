@@ -3,7 +3,7 @@
 \label{sec:mgxs-mc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-This section describes how the multi-group cross sections introduced in \cref{sec:mg-theory} may be computed by using stochastic integration. In particular, this section outlines the types of Monte Carlo tallies and the arithmetic combinations used to combine the tallies, necessary to generate MGXS.
+This section describes how the multigroup cross sections introduced in \cref{sec:mg-theory} may be computed by using stochastic integration. In particular, this section outlines the types of Monte Carlo tallies and the arithmetic combinations used to combine the tallies, necessary to generate MGXS.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inner Product Notation}
@@ -34,7 +34,7 @@ The following sections use angle bracket notation $\langle \cdot , \cdot \rangle
 \subsection{General Reaction Cross Section}
 \label{subsubsec:tally-types-gen-xs}
 
-A general spatially homogenized and energy-condensed macroscopic multi-group cross section for reaction $x$, spatial zone $k$, and energy group $g$ is simply the ratio of the groupwise reaction rates $\langle \Sigma_{x}, \psi \rangle_{k,g}$ and fluxes $\langle \psi \rangle_{k,g}$:
+A general spatially homogenized and energy-condensed macroscopic multigroup cross section for reaction $x$, spatial zone $k$, and energy group $g$ is simply the ratio of the groupwise reaction rates $\langle \Sigma_{x}, \psi \rangle_{k,g}$ and fluxes $\langle \psi \rangle_{k,g}$:
 
 \begin{equation}
 \label{eqn:general-macro}
@@ -123,7 +123,7 @@ The isotropic scattering matrix is computed with an inner product of scattering 
 
 \noindent Analog tally estimators must be used since the scattering moments depend on the neutron's outgoing energy.
 
-A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,k,g'\rightarrow g}$ may be computed for multi-group transport codes with isotropic scattering kernels. In particular, the transport correction in \cref{eqn:transport-corr-macro} can be applied by subtracting it from the diagonal elements in the matrix to compute the transport-corrected isotropic scattering matrix:
+A transport-corrected form of the isotropic scattering matrix $\hat{\Sigma}_{s0,k,g'\rightarrow g}$ may be computed for multigroup transport codes with isotropic scattering kernels. In particular, the transport correction in \cref{eqn:transport-corr-macro} can be applied by subtracting it from the diagonal elements in the matrix to compute the transport-corrected isotropic scattering matrix:
 
 \begin{equation}
 \label{eqn:scatt-trans-macro}
