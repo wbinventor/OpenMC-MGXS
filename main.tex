@@ -54,22 +54,20 @@
 
 \title{Multi-Group Cross Section Generation with the OpenMC Monte Carlo Particle Transport Code}
 
-\author[a]{William Boyd\footnote{Email: \href{mailto:wboyd@mitre.org}{wboyd@mitre.org}}\footnote{This author was a graduate research assistant at the Massachusetts Institute of Technology at the time this research was conducted.}}
+\author[a]{William Boyd\footnote{Email: \href{mailto:boyd.william.r@gmail.com}{boyd.william.r@gmail.com}}}
 \author[b]{Adam Nelson}
 \author[c]{Paul K. Romano}
 \author[d]{Samuel Shaner\footnote{This author was a graduate research assistant at the Massachusetts Institute of Technology at the time this research was conducted.}}
-\author[e]{Benoit Forget}
-\author[e]{Kord Smith}
+\author[a]{Benoit Forget}
+\author[a]{Kord Smith}
 
-\affil[a]{MITRE Corporation, 7525 Colshire Drive, McLean, Virginia 22102}
+\affil[a]{Massachusetts Institute of Technology, Department of Nuclear Science
+  and Engineering, 77 Massachusetts Avenue, Building 24, Cambridge,
+  Massachusetts 02139}
 \affil[b]{Naval Reactors, 1240 Isaac Hull Ave. SE, Washington Navy Yard, D.C. 20376}
 \affil[c]{Argonne National Laboratory, Mathematics and Computer Science
   Division, 9700 South Cass Avenue, Lemont, Illinois 60439}
 \affil[d]{Yellowstone Energy, 11631 Lanesborough Way, Farragut, Tennessee 37934}
-\affil[e]{Massachusetts Institute of Technology, Department of Nuclear Science
-  and Engineering, 77 Massachusetts Avenue, Building 24, Cambridge,
-  Massachusetts 02139}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \abstractText{High-fidelity deterministic transport codes require highly accurate multi-group cross sections (MGXS). Monte Carlo is increasingly cited as a reactor-agnostic approach to MGXS generation since it is unconstrained by the engineering-based approximations that limit the applicability of deterministic MGXS generation tools. This paper introduces a new framework that uses the OpenMC Monte Carlo code to generate MGXS for use in multi-group transport codes. The \texttt{openmc.mgxs} module is built atop OpenMC's Python API to process tally data output by the OpenMC executable. This paper validates the module to generate MGXS that enable the multi-group OpenMOC transport code to compute eigenvalues to within 50 pcm and fission rates to within 1\% of reference solutions for two heterogeneous pressurized water reactor benchmarks.}
