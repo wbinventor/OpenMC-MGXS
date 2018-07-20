@@ -37,7 +37,7 @@ A fully featured Python API enables programmatic pre- and post-processing for Op
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Tally Slicing and Merging}
+\subsubsection{Tally Merging and Slicing}
 \label{subsubsec:tally-slice-merge}
 
 Two useful and related features in the OpenMC Python API for MGXS generation are \emph{tally merging} and \emph{tally slicing}, as depicted in \cref{fig:tally-merge-slice}. It is intuitively useful to create separate \texttt{Tally} objects for each spatial domain and reaction type when generating the OpenMC inputs necessary to compute MGXS. However, this approach necessarily leads to a large number (10$^2$ -- 10$^3$) of distinct tally objects for large, complex geometries, which poses a computational bottleneck since the overhead to tally in OpenMC scales as $\mathcal{O}(N)$ for $N$ tallies\footnote{Note that $N$ refers to the number of tally definitions, each of which can contain multiple filters, nuclides, and scores.}. To compensate, the Python API's \texttt{Tally} class automatically merges user-specified tallies for input generation. Similarly, the API supports the slicing of tallies to simplify downstream data processing, which may comprise energy-, nuclide-, and/or reaction-dependent transformations of the tally data.

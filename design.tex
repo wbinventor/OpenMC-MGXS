@@ -67,7 +67,7 @@ object reads in the tally results and can then be used by the
 \subsection{Data Processing and Storage}
 \label{subsec:data-processing}
 
-The \texttt{openmc.mgxs} module takes advantage of many of the existing features of the Python API discussed in \cref{sec:openmc}. When a user loads tally results from a statepoint and displays them or stores them to disk, the following sequence of events happens:
+The \texttt{openmc.mgxs} module takes advantage of many of the existing features of the Python API discussed in \cref{sec:openmc}. When a user loads tally results from a statepoint and displays them or stores them to disk, the following sequence of events happens.
 
 \begin{itemize}[noitemsep]
 \item Reaction rate and flux \texttt{Tally} objects are obtained by using tally slicing. This step is necessary because during input generation, the tallies for multiple \texttt{MGXS} objects may have been merged into fewer tallies. Slicing returns a \texttt{Tally} object with only the filters, nuclides, and scores required for the desired MGXS.
