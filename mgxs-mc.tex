@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+s%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{MGXS Generation with Monte Carlo}
 \label{sec:mgxs-mc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,7 +41,7 @@ A general spatially homogenized and energy-condensed macroscopic multigroup cros
 \hat{\Sigma}_{x,k,g} = \frac{\langle \Sigma_{x}, \psi \rangle_{k,g}}{\langle \psi \rangle_{k,g}}
 \end{equation}
 
-\noindent The microscopic MGXS for nuclide $i$ can be easily computed by dividing by the nuclide's number density. The estimator given in \cref{eqn:general-macro} is used for all reaction types that are dependent only on the incident energy of a neutron.
+\noindent The estimator given in \cref{eqn:general-macro} is used for all reaction types that are dependent only on the incident energy of a neutron. Although the following sections focus solely on macroscopic group constants, the microscopic forms of each MGXS can be easily computed for each nuclide $i$ by dividing by the nuclide's number density.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Total Cross Section}
@@ -82,7 +82,7 @@ An expression for the in-scatter approximation\cite{yamamoto2008simplified} to t
 \hat{\Sigma}_{tr,k,g} = \frac{\langle \Sigma_{t}, \psi \rangle_{k,g} - \Delta\hat{\Sigma}_{tr,k,g}}{\langle \psi \rangle_{k,g}}.
 \end{equation}
 
-We note that an analog tally estimator must be used to compute the transport correction, since \cref{eqn:flux-weight-scatt-moment} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} should be computed with analog tally estimators to maintain consistency with the transport correction.
+We note that an analog tally estimator is used to compute the transport correction, since \cref{eqn:flux-weight-scatt-moment} includes an integral over the outgoing neutron energy. Likewise, the total collision and flux in \cref{eqn:sigt-transport-macro} are computed with analog tally estimators to maintain consistency with the transport correction. An alternative ``consistent'' form of the scattering moment matrix (\cref{eqn:flux-weight-scatt-moment}) can be used to enforce total reaction rate preservation as discussed in \cref{subsubsec:tally-types-scatt-mat}. This consistent form computes the scattering moment matrix as the product of an analog tally for the group-to-group scattering probability matrix and a track-length tally for the total scattering rates as shown in \cref{eqn:scatt-mat-consistent}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Scattering Multiplicity Matrix}
@@ -250,7 +250,7 @@ The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed a
 \subsection{Summary}
 \label{subsec:tally-types-summary}
 
-The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by ``energy'' (incoming energy) and/or ``energyout'' (outgoing energy) filters in the table. A spatial homogenization domain may be specified for a material, cell, universe, or structured mesh.
+The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by ``energy'' (incoming energy) and/or ``energyout'' (outgoing energy) filters in the table. A spatial homogenization domain may be specified for a material, cell, universe, or structured mesh. Each of the group constants in \cref{tab:tally-types} are most easily tallied as macroscopic quantities, but can be easily converted to microscopic constants by dividing by each nuclide's number density in downstream data processing routines.
 
 \begin{table}[h!]
   \centering
@@ -274,14 +274,6 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
   \midrule
 
   \multirow{2}{*}{\bf Total} & \multirow{2}{*}{$\hat{\Sigma}_{t,k,g}$} & $\langle \Sigma_{t}, \psi \rangle_{k,g}$ & space, energy \\
-  \cline{3-4}
-  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
-
-  \midrule
-
-  \multirow{3}{*}{\parbox{1.5cm}{\bf Radiative Capture}} & \multirow{3}{*}{$\hat{\Sigma}_{\gamma,k,g}$} & $\langle \Sigma_{a}, \psi \rangle_{k,g}$ & space, energy \\
-  \cline{3-4}
-  & & $\langle \Sigma_{f}, \psi \rangle_{k,g}$ & space, energy \\
   \cline{3-4}
   & & $\langle \psi \rangle_{k,g}$ & space, energy \\
 
@@ -320,6 +312,12 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \midrule
   \multicolumn{4}{c}{\bf Prompt Neutron Specific Constants} \\
+  \midrule
+
+  \multirow{2}{*}{\parbox{1.5cm}{\bf Fission}} & \multirow{2}{*}{$\hat{\Sigma}_{f,k,g}^{p}$} & $\langle \Sigma_{f}^{p}, \psi \rangle_{k,g}$ & space, energy \\
+  \cline{3-4}
+  & & $\langle \psi \rangle_{k,g}$ & space, energy \\
+
   \midrule
 
   \multirow{2}{*}{\parbox{1.5cm}{\bf Fission \hspace{1cm} Production}} & \multirow{2}{*}{$\nu\hat{\Sigma}_{f,k,g}^{p}$} & $\langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g}$ & space, energy \\
