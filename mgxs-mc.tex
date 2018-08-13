@@ -236,15 +236,17 @@ The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another u
 \noindent While the delayed neutron fraction is typically not computed as an energy-dependent quantity, the energy group subscript is included for consistency.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Delayed Neutron Precursor Decay Rate}
+\subsection{Delayed Neutron Precursor Decay Constant}
 \label{subsubsec:tally-types-lambda}
 
-The delayed neutron precursor decay rate $\hat{\lambda}_{k,g}^{d}$ is computed as
+The delayed neutron precursor decay constant $\hat{\lambda}_{k}^{d}$ is computed as
 
 \begin{equation}
 \label{eqn:lambda}
 \hat{\lambda}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g}}{\Big\langle \frac{1}{\lambda^{d}} \nu \Sigma_f^d, \psi \Big\rangle_{k,g}}.
 \end{equation}
+
+\noindent As with the delayed neutron fraction, the delayed neutron precursor decay constant is typically not computed as an energy-dependent quantity, but an energy group subscript is included for consistency. In \cref{eqn:lambda}, note the weighting of the delayed neutron precursor production rate by the inverse of the delayed neutron precursor decay constant. This weighting is performed in order to preserve the delayed neutron production rate in each delayed group.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Summary}
@@ -342,7 +344,7 @@ The tallies needed to generate MGXS libraries were outlined in detail in the pre
 
   \midrule
 
-  \multirow{2}{*}{\parbox{1.5cm}{\bf Precursor \hspace{1cm} Decay Rate}} & \multirow{2}{*}{$\hat{\lambda}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energy, delayed group \\
+  \multirow{3}{*}{\parbox{1.5cm}{\bf Precursor Decay \hspace{1cm} Constant}} & \multirow{2}{*}{$\hat{\lambda}_{k,g}^{d}$} & $\langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g}$ & space, energy, delayed group \\
   \cline{3-4}
   & & $\Big\langle \frac{1}{\lambda^d} \nu\Sigma_{f}^{d}, \psi \Big\rangle_{k,g}$ & space, energy, delayed group \\
 
