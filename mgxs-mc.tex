@@ -1,4 +1,4 @@
-s%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{MGXS Generation with Monte Carlo}
 \label{sec:mgxs-mc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -192,12 +192,14 @@ The rate of group $g'$ neutrons fissioning to produce group $g$ neutrons is give
 \nu\hat{\Sigma}_{f,g'\rightarrow g} = \frac{\langle \nu\Sigma_{f}, \psi \rangle_{k,g'\rightarrow g}}{\langle \psi \rangle_{k,g}}.
 \end{equation}
 
+Although the group-to-group fission production matrix is not used by many common deterministic multi-group codes, \cref{eqn:fiss-prod-mat} is directly computable fron MC tallies and may be useful for some applications.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Fission Energy Spectrum}
 \label{subsubsec:tally-types-chi}
 
-The fission spectrum can be computed from \cref{eqn:nu-fiss-energies} by summing over incoming and outgoing energy groups:
+The fission spectrum $\hat{\chi}_{k,g}$ is typically required for deterministic, multi-group reactor physics calculations. The fission spectrum can be computed from \cref{eqn:nu-fiss-energies} by summing over incoming and outgoing energy groups:
 
 \begin{equation}
 \label{eqn:chi}
@@ -210,6 +212,7 @@ The fission spectrum can be computed from \cref{eqn:nu-fiss-energies} by summing
 \label{eqn:chi-specific}
 \hat{\chi}_{k,g}^{p} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{p}, \psi \rangle_{k,g'\rightarrow g}} \qquad , \qquad \hat{\chi}_{k,g}^{d} = \frac{\displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}}{\displaystyle\sum\limits_{g=1}^{G} \displaystyle\sum\limits_{g'=1}^{G} \langle \nu\Sigma_{f}^{d}, \psi \rangle_{k,g'\rightarrow g}}.
 \end{equation}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Inverse Velocity}
@@ -226,14 +229,21 @@ The inverse velocity $\hat{\upsilon}_{k,g}^{-1}$ is a useful parameter for kinet
 \subsection{Delayed Neutron Fraction}
 \label{subsubsec:tally-types-beta}
 
-The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g}^{d}$ is another useful parameter for kinetics calculations. It is computed as
+The unity-weighted delayed neutron fraction $\hat{\beta}_{k,g,n}^{d}$ for delayed group $n$ is another useful parameter for kinetics calculations. It is computed as
 
 \begin{equation}
 \label{eqn:beta}
-\hat{\beta}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g}}{\langle \nu \Sigma_f, \psi \rangle_{k,g}}.
+\hat{\beta}_{k,g,n}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g,n}}{\langle \nu \Sigma_f, \psi \rangle_{k,g}}.
 \end{equation}
 
-\noindent While the delayed neutron fraction is typically not computed as an energy-dependent quantity, the energy group subscript is included for consistency.
+\noindent This can be easily re-arranged to give the canonical form of the delayed fission source $\langle \nu \Sigma_f, \psi \rangle_{k,g,n}$ as
+
+\begin{equation}
+\label{eqn:delayed-fiss-src}
+\langle \nu \Sigma_f^d, \psi \rangle_{k,g,n} = \hat{\beta}_{k,g,n}^{d} \times \langle \nu \Sigma_f, \psi \rangle_{k,g}.
+\end{equation}
+
+\noindent While the delayed neutron fraction is typically not computed as an energy-dependent quantity, the energy group subscript $g$ is included for consistency. The number of delayed groups $n$ typically varies from 1 -- 6 or 1 -- 8 for delayed group constants. The nuclide-dependent delayed neutron fractions are derived from \cref{eqn:beta} by replacing the numerator and denominator with nuclide-specific delayed and total fission sources, respectively.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Delayed Neutron Precursor Decay Constant}
@@ -246,7 +256,7 @@ The delayed neutron precursor decay constant $\hat{\lambda}_{k,g}^{d}$ is comput
 \hat{\lambda}_{k,g}^{d} = \frac{\langle \nu \Sigma_f^d, \psi \rangle_{k,g}}{\Big\langle \frac{1}{\lambda^{d}} \nu \Sigma_f^d, \psi \Big\rangle_{k,g}}.
 \end{equation}
 
-\noindent As with the delayed neutron fraction, the delayed neutron precursor decay constant is typically not computed as an energy-dependent quantity, but an energy group subscript is included for consistency. In \cref{eqn:lambda}, note the weighting of the delayed neutron precursor production rate by the inverse of the delayed neutron precursor decay constant. This weighting is performed in order to preserve the delayed neutron production rate in each delayed group.
+\noindent As with the delayed neutron fraction, the delayed neutron precursor decay constant is typically not computed as an energy-dependent quantity, but an energy group subscript $g$ is included for consistency. In \cref{eqn:lambda}, note the weighting of the delayed neutron precursor production rate by the inverse of the delayed neutron precursor decay constant. This weighting is performed in order to preserve the delayed neutron production rate in each delayed group.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Summary}

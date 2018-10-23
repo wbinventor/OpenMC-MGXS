@@ -74,7 +74,7 @@ The \texttt{openmc.mgxs} module takes advantage of many of the existing features
 \item If a user requests a Pandas DataFrame for an \texttt{MGXS} object, it is produced by first generating a Pandas DataFrame for the derived cross section tally and then modifying it with a few user-friendly customizations for MGXS applications (\textrm{e.g.}, labeling energy groups).
 \end{itemize}
 
-The \texttt{openmc.mgxs} module was developed with general design principles to generate MGXS for any multigroup neutron transport code. Although the module does not explicitly support any multigroup codes, it can export MGXS data to a variety of data storage formats, including omma-separated values (CSV) and HDF5. The exported MGXS files may be easily transformed into the database or input files required by a particular multigroup code. Additionally, a cross section library can be exported to the format used by OpenMC's multigroup transport mode.
+The \texttt{openmc.mgxs} module was developed with general design principles to generate MGXS for any multigroup neutron transport code. Although the module does not explicitly support any multigroup codes, it can export MGXS data to a variety of data storage formats, including comma-separated values (CSV) and HDF5. The exported MGXS files may be easily transformed into the database or input files required by a particular multigroup code. Additionally, a cross section library can be exported to the format used by OpenMC's multigroup transport mode.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Additional Features}
