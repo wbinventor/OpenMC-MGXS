@@ -65,7 +65,7 @@ A variety of reaction rate and flux tallies must be arithmetically combined in o
 
 Tally arithmetic is an object-oriented data-processing feature that arithmetically combines two or more tallies and/or scalar values into new \emph{derived tallies}. The Python API overloads the \texttt{Tally} class' operators for addition, subtraction, multiplication, and division. Furthermore, the \texttt{Tally} class supports summation and averaging operations across some or all of its filter, nuclide, or score bins.
 
-Multigroup cross sections may be simply and efficiently computed with tally arithmetic. For example, the code snippet in \cref{lst:python-input} illustrates how tally slicing and arithmetic are used to compute a total MGXS. The total MGXS that is returned from the tally division operation is encapsulated within a \texttt{Tally} object. This is the approach used by the MGXS generation module created for OpenMC.
+Multigroup cross sections may be simply and efficiently computed with tally arithmetic. For example, the code snippet \textcolor{red}{in \cref{lst:python-input}} illustrates how tally slicing and arithmetic are used to compute a total MGXS. The total MGXS that is returned from the tally division operation is encapsulated within a \texttt{Tally} object. This is the approach used by the MGXS generation module created for OpenMC.
 
 \lstinputlisting[language=Python, basicstyle=\ttfamily\scriptsize, caption={MGXS calculation with tally arithmetic.}, label={lst:python-input}]{listings/tally-arithmetic.py}
 
