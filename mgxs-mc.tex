@@ -30,6 +30,8 @@ The following sections use angle bracket notation $\langle \cdot , \cdot \rangle
 \langle \psi \rangle_{k,g} \equiv \langle \psi, \mathbb{1} \rangle_{k,g} = \int_{\mathbf{r} \in V_{k}} \int_{4\pi} \int_{E_{g}}^{E_{g-1}} \psi(\mathbf{r},E,\mathbf{\Omega}) \mathrm{d}E\mathrm{d}\mathbf{\Omega}\mathrm{d}\mathbf{r}.
 \end{equation}
 
+It should be emphasized that the notation above uses the angular flux rather than the scalar flux varying in energy and space for energy collapsing and spatial averaging, since the angular flux is used to collapse MGXS in OpenMC. Although this paper assumes the entire angular domain is integrated over for MGXS generation, the implementation in OpenMC are generalizable and also permit the tabulation of angular-dependent MGXS, which will be a topic explored in future publication(s).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{General Reaction Cross Section}
 \label{subsubsec:tally-types-gen-xs}
@@ -262,7 +264,7 @@ The delayed neutron precursor decay constant $\hat{\lambda}_{k,g}^{d}$ is comput
 \subsection{Summary}
 \label{subsec:tally-types-summary}
 
-The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by ``energy'' (incoming energy) and/or ``energyout'' (outgoing energy) filters in the table. A spatial homogenization domain may be specified for a material, cell, universe, or structured mesh. Each of the group constants in \cref{tab:tally-types} are most easily tallied as macroscopic quantities, but can be easily converted to microscopic constants by dividing by each nuclide's number density in downstream data processing routines.
+The tallies needed to generate MGXS libraries were outlined in detail in the preceding sections and are summarized in \cref{tab:tally-types}. The scores and filters correspond to the notation used by the OpenMC code to describe the scoring function and integration bounds. The energy group structure is specified by ``energy'' (incoming energy) and/or ``energyout'' (outgoing energy) filters in the table. A spatial homogenization domain may be specified for a material, cell, universe, or structured mesh. Each of the group constants in \cref{tab:tally-types} are most easily tallied as macroscopic quantities, but can be easily converted to microscopic constants by dividing by each nuclide's number density in downstream data processing routines. Although each entry in the table is assumed to be integrated over the entire angular domain -- since angular-independent MGXS are most readily used by multi-group transport codes -- it should be noted that angular discretization bounds may be specified to compute angular-dependent MGXS with OpenMC.
 
 \begin{table}[h!]
   \centering
